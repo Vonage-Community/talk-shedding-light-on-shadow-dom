@@ -1,0 +1,107 @@
+{{> header
+  title="Form-Associated Elements (Fixed)"
+  next="/observed-attributes.html"
+  nextTitle="Observed Attributes"
+  prev="/form-associated-broken.html"
+  prevTitle="Form-Associated Elements (Broken)"
+}}
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.4rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    height: 42px;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+
+    &:hover { background: #005fcc; }
+    &:disabled { opacity: 0.45; cursor: not-allowed; }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 380px;
+    width: 100%;
+    padding: 2rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  form h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.3rem;
+  }
+
+  form p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  console-logger {
+    margin-top: 1rem;
+  }
+</style>
+
+<h1>Form-Associated Elements <span style="color:#15803d">(Fixed)</span></h1>
+
+<p>
+  Adding <code>static formAssociated = true</code> and calling <code>this.attachInternals()</code>
+  in the constructor opts the element into the browser's form machinery. The component can then
+  call <code>setFormValue()</code> to push its value into <code>FormData</code> and
+  <code>setValidity()</code> to participate in native constraint validation.
+</p>
+
+<div id="demo-html" class="demo-stage">
+  <form id="login-form">
+    <div>
+      <h2>Sign in</h2>
+      <p>These fields are fully form-associated custom elements.</p>
+    </div>
+
+    <email-field-fixed name="email" required></email-field-fixed>
+    <password-field-fixed name="password" required></password-field-fixed>
+
+    <button type="submit">Sign in</button>
+  </form>
+</div>
+
+<p class="demo-note">
+  Try submitting with empty fields — native validation blocks it. Fill both in and submit —
+  <code>FormData</code> now contains the values from the custom elements, exactly like native inputs.
+</p>
+
+{{> code jsSource="components/form-field-fixed"}}
+
+<script type="module" src="/js/components/email-field-fixed.js"></script>
+<script type="module" src="/js/components/password-field-fixed.js"></script>
+<script type="module" src="/js/components/console-log.js"></script>
+
+<console-logger></console-logger>
+
+<script type="module">
+  document.querySelector('#login-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const entries = [...data.entries()];
+
+    console.log('--- form submit ---');
+    entries.forEach(([k, v]) => console.log(`FormData: ${k} = "${v}"`));
+  });
+</script>
+
+{{> footer}}

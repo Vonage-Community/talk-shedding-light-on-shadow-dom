@@ -1,0 +1,114 @@
+{{> header
+  title="Form-Associated Elements (Broken)"
+  next="/form-associated.html"
+  nextTitle="Form-Associated Elements (Fixed)"
+  prev="/lifecycle-callbacks.html"
+  prevTitle="Lifecycle Callbacks"
+}}
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.4rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    height: 42px;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+
+    &:hover { background: #005fcc; }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 380px;
+    width: 100%;
+    padding: 2rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  form h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.3rem;
+  }
+
+  form p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  console-logger {
+    margin-top: 1rem;
+  }
+</style>
+
+<h1>Form-Associated Elements <span style="color:#dc2626">(Broken)</span></h1>
+
+<p>
+  Custom elements are <strong>not</strong> form-associated by default. Without
+  <code>static formAssociated = true</code> and <code>this.attachInternals()</code>,
+  the browser doesn't know these elements exist as form fields — their values are
+  invisible to <code>FormData</code> and native validation is bypassed entirely.
+</p>
+
+<div id="demo-html" class="demo-stage">
+  <form id="login-form" novalidate>
+    <div>
+      <h2>Sign in</h2>
+      <p>These fields look like inputs, but the form can't see them.</p>
+    </div>
+
+    <email-field name="email" required></email-field>
+    <password-field name="password" required></password-field>
+
+    <button type="submit">Sign in</button>
+  </form>
+</div>
+
+<p class="demo-note">
+  Submit the form — even with empty fields. Notice that the form submits without complaint
+  and <code>FormData</code> contains <strong>no entries</strong> for the custom elements.
+  The browser treats them as unknown elements, not form controls.
+</p>
+
+{{> code jsSource="components/form-field"}}
+
+<script type="module" src="/js/components/email-field.js"></script>
+<script type="module" src="/js/components/password-field.js"></script>
+<script type="module" src="/js/components/console-log.js"></script>
+
+<console-logger></console-logger>
+
+<script type="module">
+  document.querySelector('#login-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const entries = [...data.entries()];
+
+    console.log('--- form submit ---');
+    console.log('email field value:', document.querySelector('email-field').value);
+    console.log('password field value:', document.querySelector('password-field').value);
+
+    if (entries.length === 0) {
+      console.warn('FormData is empty — the custom elements submitted nothing. The browser has no idea they contain values.');
+    } else {
+      entries.forEach(([k, v]) => console.log(`FormData: ${k} = "${v}"`));
+    }
+  });
+</script>
+
+{{> footer}}

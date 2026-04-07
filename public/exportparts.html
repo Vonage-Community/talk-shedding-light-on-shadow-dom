@@ -1,0 +1,147 @@
+{{> header
+title="Window-ception"
+next="/slots.html"
+nextTitle="Slots"
+prev="/css-parts-styled.html"
+prevTitle="CSS Parts (Styled)"
+}}
+
+<style id="demo-style">
+  /* ::part() reaches one level deep — exportparts-card's own parts */
+  .parts-applied exportparts-card::part(title) {
+    color: var(--color-primary);
+  }
+
+  .parts-applied exportparts-card::part(body) {
+    background: #f0f7ff;
+  }
+
+  /* ::part() reaches TWO levels — via exportparts forwarding */
+  .exportparts-applied exportparts-card::part(badge-dot) {
+    color: #15803d;
+  }
+
+  .exportparts-applied exportparts-card::part(badge-label) {
+    background: #dcfce7;
+    color: #15803d;
+  }
+</style>
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 0.4em;
+    padding: 0.55rem 1.1rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    height: 40px;
+
+    &:hover {
+      background: #005fcc;
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+
+  #style-result {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-left: 4px solid #f59e0b;
+    border-radius: 4px;
+    font-size: 0.875rem;
+
+    &.success {
+      background: #e8f5e9;
+      border-left-color: #4caf50;
+      color: #1b5e20;
+    }
+
+    &.info {
+      background: #e0f0ff;
+      border-left-color: var(--color-primary);
+      color: #003080;
+    }
+  }
+</style>
+
+<h1><code>exportparts</code></h1>
+
+<p>
+  <code>::part()</code> only reaches one shadow level deep. When a component nests another
+  component inside its own shadow root, the inner component's parts are hidden from the page.
+  The <code>exportparts</code> attribute forwards inner parts outward under new names so
+  consumers can style them from anywhere in the tree.
+</p>
+
+<div id="demo-html" class="demo-stage demo-stage--column">
+  <exportparts-card>
+    <span slot="title">Rocinante</span>
+    <span slot="status">Active</span>
+    <p>
+      The Rocinante ("Roci") is a former MCRN Corvette-class light frigate turned independent warship.
+      Originally commissioned as the MCRN Tachi, she was renamed by James Holden after his crew escaped
+      the Donnager aboard her.
+    </p>
+  </exportparts-card>
+</div>
+
+<button type="button" id="apply-parts">Apply <code>::part()</code> Styles</button>
+
+<button type="button" id="apply-exportparts" disabled>Apply <code>exportparts</code> Styles</button>
+
+<p class="demo-note">
+  <code>exportparts-card</code> declares
+  <code>exportparts="dot: badge-dot, label: badge-label"</code> on the nested
+  <code>&lt;status-badge&gt;</code>. This maps the badge's inner <code>dot</code> and
+  <code>label</code> parts to <code>badge-dot</code> and <code>badge-label</code> — reachable
+  from the page with <code>exportparts-card::part(badge-dot)</code>.
+</p>
+
+<div id="style-result" hidden></div>
+
+{{> code jsSource="components/exportparts-card"}}
+
+<script type="module" src="/js/components/exportparts-card.js"></script>
+
+<script type="module">
+  import {applyPartStyles, applyExportpartStyles} from '/js/exportparts.js';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const partsBtn = document.querySelector('#apply-parts');
+    const exportpartsBtn = document.querySelector('#apply-exportparts');
+    const result = document.querySelector('#style-result');
+
+    partsBtn.addEventListener('click', (event) => {
+      applyPartStyles();
+      event.target.disabled = true;
+      exportpartsBtn.disabled = false;
+
+      result.hidden = false;
+      result.className = 'info';
+      result.textContent = '✅ title and body parts styled — ::part() reached one level deep.'
+        + ' The badge inside is still unstyled; its parts are hidden behind a second shadow boundary.';
+    });
+
+    exportpartsBtn.addEventListener('click', (event) => {
+      applyExportpartStyles();
+      event.target.disabled = true;
+
+      result.className = 'success';
+      result.textContent = '✅ badge-dot and badge-label now styled — exportparts forwarded those'
+        + ' inner parts outward, letting page CSS cross two shadow boundaries at once.';
+    });
+  });
+</script>
+
+{{> footer}}

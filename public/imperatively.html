@@ -1,0 +1,101 @@
+{{> header
+title="Imperatively Creating a Shadow Root"
+next="/css-parts.html"
+nextTitle="CSS Parts"
+prev="/"
+prevTitle="Home"
+}}
+
+<style id="demo-style">
+  blockquote {
+    margin: 0 0 0.5rem;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid #0070f3;
+    font-style: italic;
+    color: #1a1a1a;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  cite {
+    font-style: bold;
+    font-weight: 600;
+  }
+</style>
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 0.4em;
+    padding: 0.55rem 1.1rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    height: 40px;
+
+    &:hover {
+      background: #005fcc;
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+</style>
+
+<h1>Imperatively Creating a Shadow Root</h1>
+
+<p>
+  Call <code>attachShadow()</code> on any element at runtime to replace its light-DOM
+  children with an isolated shadow tree. Once attached, the original content is no
+  longer rendered — only what you place in the shadow root is visible.
+
+</p>
+
+<div id="demo-html" class="demo-stage demo-stage-column">
+  <blockquote>
+    "Anything worth encrypting is worth not putting on a network in the first place."
+  </blockquote>
+
+  <p>- Bobbie Draper, <cite>Persepolis Rising</cite></p>
+</div>
+
+<button type="button" id="attach-shadow">Attach Shadow Root</button>
+
+<button type="button" id="attach-with-style">Attach with Style 😎 </button>
+
+<p class="demo-note">
+  Click the button to call <code>attachShadow()</code>. The original quote will disappear and be replaced by new
+  content written
+  directly into the shadow root.
+</p>
+
+{{> code jsSource="imperatively"}}
+
+<script type="module">
+  import {attachShadow, attachWithStyle} from '/js/imperatively.js';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#attach-shadow').addEventListener('click', (event) => {
+      attachShadow();
+      event.target.disabled = true;
+    });
+
+    document.querySelector('#attach-with-style').addEventListener('click', (event) => {
+      attachWithStyle('demo-style');
+      event.target.disabled = true;
+    });
+  });
+</script>

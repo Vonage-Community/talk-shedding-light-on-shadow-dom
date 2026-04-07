@@ -1,0 +1,190 @@
+<html>
+<style>
+  h1 {
+    color: blue
+  }
+</style>
+
+<body>
+
+  <h1>Shadow Dom</h1>
+
+  <button type="button">Make All Red</button>
+  <button type="reset">Reset</button>
+
+  <section id="ships">
+    <ship-article>
+      <h1 slot="title">Canterbury</h1>
+
+      <span slot="summary">
+        The Canterbury ("Cant") was a former colony ship which was converted to function as an ice hauler traveling
+        among the Belt and Outer Planets in service of the Pur'n'Kleen Water Company.
+      </span>
+
+      <p>
+        The Canterbury was powered by four dual Epstein drives for axial acceleration and also had a number of
+        reaction control system thrusters to enable rotational maneuvers. The spacecraft was capable of a sustained 3g
+        acceleration during emergency maneuvers.
+      </p>
+
+      <p>
+        The Canterbury was 1,000m (3281 feet) long and had a draft of about 250 m (820 feet). The majority of the
+        ship's volume was taken up by its hollow cargo bay, which was open at the bow for capturing ice in space. It
+        also had robotic arms within the cargo bay.
+      </p>
+
+      <p>
+        The ship carried number of small auxiliary craft but only carried one true shuttle, the Knight.
+      </p>
+
+      <p>
+        The vessel captured ice fragments by matching trajectories with the ice chunks, then slowly accelerating so
+        the ice would enter the gaping maw that was her bow. The chunks would then be grabbed by large remote
+        manipulator arms. Large pieces of ice were cut up, and smaller pieces of ice would then be stored on racks
+        around the periphery of the open cargo bay. Ice workers in vac suits assisted with the capture operation to
+        ensure that the ice was secured properly in the racks.
+      </p>
+
+      <p>
+        As a civilian ice hauler, the Canterbury carried no armaments.
+      </p>
+    </ship-article>
+
+    <article id="donnager">
+      <h1>Donnager</h1>
+
+      <details>
+
+        <summary>
+          The MCRN Donnager was the flagship of the Martian Congressional Republic Navy's (MCRN) Jupiter fleet. The
+          Donnager is the namesake of the Donnager-class Battleship. Destroyed before the Ganymede incident, she
+          played
+          a highly active role in protecting Martian shipping lanes, shutting down piracy, and protecting Martian
+          interests in the outer Solar system.
+        </summary>
+
+        <p>
+          The MCRN Donnager was one of the largest battleships ever commissioned, almost 500 meters long and weighing
+          approximately 250,000 tons. This made her significantly larger than her United Nations Navy (UNN)
+          counterpart,
+          the 376-meter long Truman-class dreadnought. Not only did she dwarf the competition, but her sheer size
+          allowed
+          her to carry a small support fleet within her hull, consisting of Morrigan-class patrol destroyer and
+          Corvette-class
+          light frigates.
+        </p>
+
+        <p>
+          Like most MCRN ships, she was sleek and angular, covered in thick armor plating. Shaped like a long
+          broadhead
+          arrow tip, with the four engine nacelles fanning out resembling the fletching of an arrow. Each nacelle
+          housed
+          an RT-10 'Kaminari' Epstein Drive. She was designed for long periods at high-g.
+        </p>
+
+        <p>
+          Like most ships, she was built in the "office tower" configuration: each deck being a floor of the building,
+          ladders or elevators running down the axis. Because of this layout, constant thrust takes the place of
+          gravity. At nearly five hundred meters long, she was the size of a 130-story skyscraper.
+        </p>
+
+        <p>
+          Halfway down her frame were two enormous doors which led into her expansive internal hangar, housing her
+          small
+          fleet. Positioned far in front of the hangar doors were two enormous VX-12 "Foehammer" ultra-heavy railgun
+          turrets, each almost twice as long as a Corvette-class light frigate. At her nose were 6 large torpedo
+          tubes,
+          with 8 on the aft of the vessel. Supporting these weapons were 59 Nariman Dynamics 40mm PDCs (Point Defense
+          Cannons), usually retracted into the ships hull. Ships of this class are also equipped with a 'Condition
+          Zero'
+          Fail Safe protocol, which will scuttle the ship when breached with boarders. However, the MCRN Donnager was
+          the only Donnager-class battleship to ever use it.
+        </p>
+
+        <p>
+          It was coated in the MCRN colors of black and orange.
+        </p>
+      </details>
+
+    </article>
+
+    <article id="rocinate">
+      <h1>Rocinate</h1>
+
+      <details>
+
+        <summary>
+          The Rocinante ("Roci") is a former MCRN (Martian Congressional Republic Navy)-turned-independent
+          Corvette-class light frigate capable of multiple combat roles. Originally commissioned as the MCRN Tachi (ECF
+          270), the ship was stationed aboard the flagship of the Martian navy, the MCRN Donnager. It was renamed by
+          James Holden after
+          he and his crew escaped the Donnager aboard the ship, marking the start of its long and decorated career as an
+          independent warship.
+        </summary>
+
+        <p>
+          Akin to a narrow, tall building, the ship's construction is layered floor-by-floor from the drive cone and
+          reactor "upwards" to the flight deck and sensor relays. The ship features a storage and engineering deck,
+          machine shop, galley and crew cabins, medical bay, storage deck, crew airlock, command deck and flight deck.
+          Under thrust, g-forces then provide a "downwards" pull amenable to human orientation, simulating gravity.
+        </p>
+
+        <p>
+          The Rocinante's normal crew complement was well over a dozen navy personnel and officers, and on many missions
+          the ship would also carry at least six marines. As a Corvette-class frigate, the ship was capable of housing
+          thirty Martian officers and crew during its operation with the MCRN.[2]
+        </p>
+      </details>
+    </article>
+  </section>
+
+  <template id="ship-article">
+    <article>
+      <style>
+        ::slotted(h1) {
+          color: red !important
+        }
+      </style>
+
+      <slot name="title"></slot>
+
+      <details>
+        <summary>
+          <slot name="summary"></slot>
+        </summary>
+
+        <slot></slot>
+
+      </details>
+    </article>
+  </template>
+
+</body>
+
+<script type="text/javascript">
+  document.querySelector('button[type="button"]').addEventListener('click', () => {
+    for (node of document.querySelectorAll('article h1')) {
+      node.style.color = "red"
+    }
+  });
+
+  document.querySelector('button[type="reset"]').addEventListener('click', () => {
+    for (node of document.querySelectorAll('article h1')) {
+      node.style.color = "blue"
+    }
+  });
+
+  class ShipArticle extends HTMLElement {
+    constructor() {
+      super();
+      const template = document.querySelector('#ship-article')
+      this.attachShadow({mode: "closed"}).appendChild(
+        template.content.cloneNode(true)
+      )
+    }
+  }
+
+  customElements.define('ship-article', ShipArticle)
+</script>
+
+</html>

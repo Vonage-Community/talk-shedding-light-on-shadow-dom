@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="api-host-url" content="{{apiHostUrl}}">
+
+  <title>{{title}}</title>
+
+  <link rel="stylesheet" href="/css/main.css" />
+
+</head>
+
+<body>
+  <header>
+    <nav>
+
+    {{#if prev}}
+      <a href="{{prev}}">&larr; {{#if prevTitle}} {{prevTitle}} {{else}} "Previous"{{/if}}</a>
+    {{/if}}
+
+    {{#if next}}
+      <a href="{{next}}">{{#if nextTitle}} {{nextTitle}} {{else}} "Next"{{/if}} &rarr; </a>
+    {{/if}}
+    </nav>
+  </header>
+  <main>

@@ -1,0 +1,8 @@
+node_modules
+coverage
+private.key
+.env
+.vonagerc
+data/*
+!data/bounuses.json
+dist

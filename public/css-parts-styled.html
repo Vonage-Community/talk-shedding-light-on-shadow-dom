@@ -1,0 +1,214 @@
+{{> header
+title="Fixing with ::part"
+next="/exportparts.html"
+nextTitle="Window-ception"
+prev="/css-parts.html"
+prevTitle="Letting in Some Light"
+}}
+
+<style id="demo-style">
+  .styles-applied ship-article::part(headline) {
+    color: var(--color-primary);
+  }
+
+  .styles-applied ship-article::part(summary) {
+    border-left-color: var(--color-primary);
+    color: #0a0a0a;
+  }
+
+  .styles-applied .ship-card h2 {
+    color: var(--color-primary);
+  }
+
+  .styles-applied .ship-card .summary {
+    border-left-color: var(--color-primary);
+    color: #0a0a0a;
+  }
+</style>
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 0.4em;
+    padding: 0.55rem 1.1rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    height: 40px;
+
+    &:hover {
+      background: #005fcc;
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+
+  #style-result {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #fff3cd;
+    border-left: 4px solid #f59e0b;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: #92400e;
+  }
+
+  .ship-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    max-width: 640px;
+    width: 100%;
+  }
+
+  .ship-card h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.4rem;
+    line-height: 1.25;
+    color: #1a1a1a;
+  }
+
+  .ship-card .summary {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #555;
+    border-left: 3px solid #e0e0e0;
+    padding-left: 0.75rem;
+    margin: 0 0 1rem;
+  }
+
+  .ship-card details {
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.7;
+  }
+
+  .ship-card summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.875rem;
+    user-select: none;
+  }
+
+  #demo-html:not(.styles-applied)~#style-result {
+    display: none;
+  }
+</style>
+
+<h1>CSS Parts</h1>
+
+<p>
+  Shadow DOM encapsulates styles — page CSS cannot reach inside a custom element's shadow root.
+  Even if you write a perfectly valid rule targeting a component's internals, the browser silently
+  ignores it. The <code>::part()</code> pseudo-element is the opt-in escape hatch, but only works
+  when the component author explicitly marks elements with a <code>part</code> attribute.
+</p>
+
+<div id="demo-html" class="demo-stage demo-stage--column">
+  <ship-article></ship-article>
+
+  <article class="ship-card">
+    <h2>Donnager</h2>
+    <p class="summary">
+      The MCRN Donnager was the flagship of the Martian Congressional Republic Navy's Jupiter fleet
+      and the namesake of the Donnager-class battleship. Almost 500 meters long and weighing
+      approximately 250,000 tons, she dwarfed her United Nations Navy counterparts.
+    </p>
+    <details>
+      <summary>Read more</summary>
+      <p>
+        Like most MCRN ships, she was sleek and angular, covered in thick armor plating — shaped like
+        a long broadhead arrow tip, with four engine nacelles fanning out like the fletching of an arrow.
+        Each nacelle housed an RT-10 'Kaminari' Epstein Drive.
+      </p>
+      <p>
+        Halfway down her frame were two enormous doors leading into her expansive internal hangar. Positioned
+        forward were two VX-12 "Foehammer" ultra-heavy railgun turrets, each almost twice as long as a
+        Corvette-class frigate, supported by 59 Nariman Dynamics 40mm PDCs.
+      </p>
+    </details>
+  </article>
+
+  <article class="ship-card">
+    <h2>Rocinante</h2>
+    <p class="summary">
+      The Rocinante ("Roci") is a former MCRN Corvette-class light frigate turned independent warship.
+      Originally commissioned as the MCRN Tachi, she was renamed by James Holden after his crew escaped
+      the Donnager aboard her.
+    </p>
+    <details>
+      <summary>Read more</summary>
+      <p>
+        Akin to a narrow, tall building, the ship's construction is layered floor-by-floor from the drive
+        cone and reactor upwards to the flight deck and sensor relays. Under thrust, g-forces provide a
+        downward pull simulating gravity.
+      </p>
+      <p>
+        As a Corvette-class frigate the ship was capable of housing thirty Martian officers and crew.
+        Her normal independent crew complement was four, with the occasional addition of passengers or marines.
+      </p>
+    </details>
+  </article>
+
+  <article class="ship-card">
+    <h2>Nauvoo</h2>
+    <p class="summary">
+      The LDSS Nauvoo, later known as OPAS Behemoth and then Medina Station, is a generation ship constructed at Tycho
+      Station. Cylindrical in shape, it measured just over two kilometers long and half a kilometer wide. Four
+      Donnager-class battleships would fit in her belly and not touch the walls.
+    </p>
+    <details>
+      <summary>Read more</summary>
+      <p>
+        It was intended to be populated by thousands of Mormons and travel beyond the Sol system to Tau Ceti. However,
+        before its voyage, the ship was used by members of the Outer Planets Alliance to attempt to divert the course of
+        Eros during the Eros incident. The attempt failed and the ship was salvaged by Drummer, rechristened as the OPAS
+        Behemoth. It later underwent refurbishment to transform it from a generational travel ship, into a functional
+        battleship that would be on par with those of the Martian Congressional Republic Navy and United Nations Navy.
+      </p>
+    </details>
+  </article>
+</div>
+
+<button type="button" id="apply-styles">Try to Apply Styles</button>
+
+<p class="demo-note">
+  The <code>&lt;style&gt;</code> block on this page uses <code>ship-article::part(headline)</code> and
+  <code>ship-article::part(summary)</code>. Because <code>ship-article</code> exposes those parts,
+  styles cross the shadow boundary and all articles update together.
+</p>
+
+<div id="style-result" hidden></div>
+
+{{> code jsSource="components/ship-article"}}
+
+<script type="module" src="/js/components/ship-article.js"></script>
+
+<script type="module">
+  const applyStyles = () => {
+    const result = document.querySelector('#style-result');
+
+    document.querySelector('#demo-html').classList.add('styles-applied');
+
+    result.hidden = false;
+    result.textContent = '✅ All articles updated — including the Canterbury (custom element).'
+      + ' Using ::part() selectors, the component author opted in and styles cross the shadow boundary.';
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#apply-styles').addEventListener('click', (event) => {
+      applyStyles();
+      event.target.disabled = true;
+    });
+  });
+</script>

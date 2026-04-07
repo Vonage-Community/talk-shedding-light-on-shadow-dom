@@ -1,0 +1,186 @@
+{{> header
+title="Slots"
+next="/lifecycle-callbacks.html"
+nextTitle="Lifecycle Callbacks"
+prev="/exportparts.html"
+prevTitle="exportparts"
+}}
+
+<style id="demo-style">
+  .styles-applied [slot="headline"] {
+    color: var(--color-primary);
+  }
+
+  .styles-applied [slot="summary"] {
+    border-left-color: var(--color-primary);
+    color: #0a0a0a;
+  }
+</style>
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 0.4em;
+    padding: 0.55rem 1.1rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    height: 40px;
+
+    &:hover {
+      background: #005fcc;
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+
+  #style-result {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #e8f5e9;
+    border-left: 4px solid #4caf50;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    color: #1b5e20;
+  }
+
+  #demo-html:not(.styles-applied)~#style-result {
+    display: none;
+  }
+</style>
+
+<h1>Slots</h1>
+
+<p>
+  Slots let the page pass its own light DOM content into a shadow root. Unlike hardcoded shadow
+  content, slotted elements remain in the light DOM — so regular page styles can reach them.
+  Named slots (<code>slot="headline"</code>, <code>slot="summary"</code>, etc.) give the component
+  author control over where each piece of content is placed inside the shadow tree.
+</p>
+
+<div id="demo-html" class="demo-stage demo-stage--column">
+  <ship-article-slotted>
+    <h2 slot="headline">Canterbury</h2>
+    <p slot="summary">
+      The Canterbury ("Cant") was a former colony ship converted to function as an ice hauler
+      traveling among the Belt and Outer Planets in service of the Pur'n'Kleen Water Company.
+    </p>
+    <details slot="details">
+      <summary>Read more</summary>
+      <p>
+        The Canterbury was powered by four dual Epstein drives for axial acceleration and also had
+        a number of reaction control system thrusters to enable rotational maneuvers. The spacecraft
+        was capable of a sustained 3g acceleration during emergency maneuvers.
+      </p>
+      <p>
+        The Canterbury was 1,000m (3,281 feet) long and had a draft of about 250m (820 feet). The
+        majority of the ship's volume was taken up by its hollow cargo bay, which was open at the bow
+        for capturing ice in space.
+      </p>
+      <p>
+        As a civilian ice hauler, the Canterbury carried no armaments.
+      </p>
+    </details>
+  </ship-article-slotted>
+
+  <ship-article-slotted>
+    <h2 slot="headline">Donnager</h2>
+    <p slot="summary">
+      The MCRN Donnager was the flagship of the Martian Congressional Republic Navy's Jupiter fleet
+      and the namesake of the Donnager-class battleship. Almost 500 meters long and weighing
+      approximately 250,000 tons, she dwarfed her United Nations Navy counterparts.
+    </p>
+    <details slot="details">
+      <summary>Read more</summary>
+      <p>
+        Like most MCRN ships, she was sleek and angular, covered in thick armor plating — shaped like
+        a long broadhead arrow tip, with four engine nacelles fanning out like the fletching of an arrow.
+        Each nacelle housed an RT-10 'Kaminari' Epstein Drive.
+      </p>
+      <p>
+        Halfway down her frame were two enormous doors leading into her expansive internal hangar. Positioned
+        forward were two VX-12 "Foehammer" ultra-heavy railgun turrets, each almost twice as long as a
+        Corvette-class frigate, supported by 59 Nariman Dynamics 40mm PDCs.
+      </p>
+    </details>
+  </ship-article-slotted>
+
+  <ship-article-slotted>
+    <h2 slot="headline">Rocinante</h2>
+    <p slot="summary">
+      The Rocinante ("Roci") is a former MCRN Corvette-class light frigate turned independent warship.
+      Originally commissioned as the MCRN Tachi, she was renamed by James Holden after his crew escaped
+      the Donnager aboard her.
+    </p>
+    <details slot="details">
+      <summary>Read more</summary>
+      <p>
+        Akin to a narrow, tall building, the ship's construction is layered floor-by-floor from the drive
+        cone and reactor upwards to the flight deck and sensor relays. Under thrust, g-forces provide a
+        downward pull simulating gravity.
+      </p>
+      <p>
+        As a Corvette-class frigate the ship was capable of housing thirty Martian officers and crew.
+        Her normal independent crew complement was four, with the occasional addition of passengers or marines.
+      </p>
+    </details>
+  </ship-article-slotted>
+
+  <ship-article-slotted>
+    <h2 slot="headline">Nauvoo</h2>
+    <p slot="summary">
+      The LDSS Nauvoo, later known as OPAS Behemoth and then Medina Station, is a generation ship constructed at Tycho
+      Station. Cylindrical in shape, it measured just over two kilometers long and half a kilometer wide. Four
+      Donnager-class battleships would fit in her belly and not touch the walls.
+    </p>
+    <details slot="details">
+      <summary>Read more</summary>
+      <p>
+        It was intended to be populated by thousands of Mormons and travel beyond the Sol system to Tau Ceti. However,
+        before its voyage, the ship was used by members of the Outer Planets Alliance to attempt to divert the course of
+        Eros during the Eros incident. The attempt failed and the ship was salvaged by Drummer, rechristened as the OPAS
+        Behemoth. It later underwent refurbishment to transform it from a generational travel ship, into a functional
+        battleship that would be on par with those of the Martian Congressional Republic Navy and United Nations Navy.
+      </p>
+    </details>
+  </ship-article-slotted>
+</div>
+
+<button type="button" id="apply-styles">Apply Styles</button>
+
+<p class="demo-note">
+  Because slotted content lives in the <strong>light DOM</strong>, regular page CSS can style it directly —
+  no <code>::part()</code> needed. The <code>::slotted()</code> pseudo-element lets the component itself
+  style slotted content from inside the shadow root.
+</p>
+
+<div id="style-result" hidden></div>
+
+{{> code jsSource="components/ship-article-slotted"}}
+
+<script type="module" src="/js/components/ship-article-slotted.js"></script>
+
+<script type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#apply-styles').addEventListener('click', (event) => {
+      document.querySelector('#demo-html').classList.add('styles-applied');
+      event.target.disabled = true;
+
+      const result = document.querySelector('#style-result');
+      result.hidden = false;
+      result.textContent = '✅ Styles applied! Because the content is in the light DOM, regular CSS selectors reach it directly.';
+    });
+  });
+</script>
+
+{{> footer}}

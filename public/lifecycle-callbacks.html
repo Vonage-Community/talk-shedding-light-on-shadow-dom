@@ -1,0 +1,120 @@
+{{> header
+  title="Lifecycle Callbacks"
+  next="/form-associated-broken.html"
+  nextTitle="Form-Associated Elements (Broken)"
+  prev="/slots.html"
+  prevTitle="Slots"
+}}
+
+<style id="demo-style">
+  /* console-logger handles its own rendering */
+</style>
+
+<style>
+  .demo-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .ship-counter {
+    font-size: 0.85rem;
+    color: #666;
+    min-width: 4rem;
+    text-align: center;
+  }
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.55rem 1.1rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    height: 40px;
+
+    &:hover {
+      background: #005fcc;
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+
+  console-logger {
+    margin-top: 1rem;
+  }
+</style>
+
+<h1>Lifecycle Callbacks</h1>
+
+<p>
+  Custom elements have five lifecycle callbacks that fire at predictable moments.
+  Navigate through the ships below — each action triggers one or more callbacks,
+  logged to the console and to the panel on this page.
+</p>
+
+<div id="demo-html" class="demo-stage demo-stage--column">
+  <ship-lifecycle id="ship-card" ship-name="Canterbury" summary="The Canterbury (&quot;Cant&quot;) was a former colony ship converted to function as an ice hauler traveling among the Belt and Outer Planets in service of the Pur'n'Kleen Water Company."></ship-lifecycle>
+</div>
+
+<div class="demo-controls">
+  <button type="button" id="prev-ship" disabled>← Previous</button>
+  <span class="ship-counter" id="ship-counter">1 / 4</span>
+  <button type="button" id="next-ship">Next →</button>
+</div>
+
+<p class="demo-note">
+  Each navigation <strong>removes</strong> the current element and <strong>adds a new one</strong>,
+  triggering <code>disconnectedCallback</code>, <code>constructor</code>, and
+  <code>connectedCallback</code>. Changing the ship's attributes while it stays in the DOM
+  triggers <code>attributeChangedCallback</code> instead.
+</p>
+
+<console-logger id="log-panel"></console-logger>
+
+{{> code jsSource="components/ship-lifecycle"}}
+
+<script type="module" src="/js/components/ship-lifecycle.js"></script>
+<script type="module" src="/js/components/console-log.js"></script>
+
+<script type="module">
+  import { ships } from '/js/lifecycle-callbacks.js';
+
+  const stage = document.querySelector('#demo-html');
+  const prevBtn = document.querySelector('#prev-ship');
+  const nextBtn = document.querySelector('#next-ship');
+  const counter = document.querySelector('#ship-counter');
+
+  let index = 0;
+
+  const navigate = (newIndex) => {
+    const current = stage.querySelector('ship-lifecycle');
+    if (current) current.remove();
+
+    const ship = ships[newIndex];
+    const el = document.createElement('ship-lifecycle');
+    el.setAttribute('ship-name', ship.name);
+    el.setAttribute('summary', ship.summary);
+    stage.appendChild(el);
+
+    index = newIndex;
+    counter.textContent = `${index + 1} / ${ships.length}`;
+    prevBtn.disabled = index === 0;
+    nextBtn.disabled = index === ships.length - 1;
+  };
+
+  prevBtn.addEventListener('click', () => navigate(index - 1));
+  nextBtn.addEventListener('click', () => navigate(index + 1));
+</script>
+
+{{> footer}}

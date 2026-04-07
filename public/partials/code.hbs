@@ -1,0 +1,36 @@
+  <h2>Example Code</h2>
+
+  <section class="usage-section">
+    <section id="code">
+      <h3>Javascript</h3>
+    </section>
+
+    <section id="html">
+      <h3>HTML</h3>
+    </section>
+
+    <section id="css">
+      <h3>CSS</h3>
+    </section>
+  </section>
+
+<script type="module">
+  import {renderStyle, renderSource, renderScript} from '/js/render-source.js';
+
+  renderSource(
+    document.querySelector('#demo-html'),
+    document.querySelector('#html'),
+  );
+
+console.log('/js/{{jsSource}}.js')
+  renderScript(
+    '/js/{{jsSource}}.js',
+    document.querySelector('#code'),
+  );
+
+  renderStyle(
+    document.querySelector('#demo-style'),
+    document.querySelector('#css'),
+  );
+
+</script>
