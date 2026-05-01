@@ -1,118 +1,65 @@
-{{> header title="Shedding Light on the Shadow DOM" }}
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-  .page-intro {
-    max-width: 640px;
-    margin-bottom: 2.5rem;
-    color: #444;
-    line-height: 1.7;
-  }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  .steps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.25rem;
-  }
+  <title>Shedding light on the Shadow DOM</title>
 
-  .step-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    padding: 1.4rem 1.5rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    background: #fff;
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  <link href="css/styles.css" rel="stylesheet" />
+</head>
 
-    &:hover {
-      border-color: var(--color-primary);
-      box-shadow: 0 4px 16px rgba(0,112,243,0.12);
-      transform: translateY(-2px);
-    }
-  }
+<body>
+  <ul class="circles">
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
 
-  .step-number {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-primary);
-    font-family: var(--font-mono);
-  }
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h1>Shedding Light</h1>
+        <h3>on the Shadow DOM</h3>
+      </section>
 
-  .step-title {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #111;
-    line-height: 1.3;
-  }
+      <section>Slide 2</section>
 
-  .step-desc {
-    font-size: 0.85rem;
-    color: #666;
-    line-height: 1.55;
-    margin-top: 0.15rem;
-  }
-</style>
+      <section>Slide 3</section>
 
-<h1>Shedding Light on the Shadow DOM</h1>
+      <section>Slide 4</section>
+    </div>
+  </div>
 
-<p class="page-intro">
-  A step-by-step walkthrough of the Shadow DOM and Web Components APIs — from imperatively
-  attaching a shadow root all the way to form-associated custom elements.
-</p>
+  <script type="module">
+    import 'reveal.js/reveal.css';
+    import '/css/styles.css';
+    import 'reveal.js/plugin/highlight/monokai.css';
+    import Reveal from 'reveal.js';
+    import Markdown from 'reveal.js/plugin/markdown';
+    import Highlight from 'reveal.js/plugin/highlight';
 
-<div class="steps-grid">
-  <a class="step-card" href="/imperatively.html">
-    <span class="step-number">Step 01</span>
-    <span class="step-title">Imperatively Creating a Shadow Root</span>
-    <span class="step-desc">Call <code>attachShadow()</code> at runtime and see how it replaces light DOM content with an isolated shadow tree.</span>
-  </a>
+    Reveal.initialize({
+      hash: true,
 
-  <a class="step-card" href="/css-parts.html">
-    <span class="step-number">Step 02</span>
-    <span class="step-title">CSS Parts — Broken</span>
-    <span class="step-desc">Watch regular CSS selectors fail to pierce the shadow boundary, even when the rules look correct.</span>
-  </a>
+      controls: false,
 
-  <a class="step-card" href="/css-parts-styled.html">
-    <span class="step-number">Step 03</span>
-    <span class="step-title">CSS Parts — Fixed</span>
-    <span class="step-desc">Use <code>::part()</code> to reach inside a shadow root once the component author opts in with <code>part</code> attributes.</span>
-  </a>
+      progress: false,
 
-  <a class="step-card" href="/exportparts.html">
-    <span class="step-number">Step 04</span>
-    <span class="step-title">exportparts</span>
-    <span class="step-desc">Forward inner component parts outward with <code>exportparts</code> so page CSS can cross two shadow boundaries at once.</span>
-  </a>
+      plugins: [Markdown, Highlight],
 
-  <a class="step-card" href="/slots.html">
-    <span class="step-number">Step 05</span>
-    <span class="step-title">Slots</span>
-    <span class="step-desc">Project light DOM content into a shadow root with named slots — and keep it styleable from the page.</span>
-  </a>
 
-  <a class="step-card" href="/lifecycle-callbacks.html">
-    <span class="step-number">Step 06</span>
-    <span class="step-title">Lifecycle Callbacks</span>
-    <span class="step-desc">See <code>constructor</code>, <code>connectedCallback</code>, <code>disconnectedCallback</code>, and <code>attributeChangedCallback</code> fire in real time.</span>
-  </a>
+    });
 
-  <a class="step-card" href="/form-associated-broken.html">
-    <span class="step-number">Step 07</span>
-    <span class="step-title">Form-Associated Elements — Broken</span>
-    <span class="step-desc">Custom elements without <code>formAssociated</code> are invisible to <code>FormData</code> — submit the form and watch the values disappear.</span>
-  </a>
+  </script>
+</body>
 
-  <a class="step-card" href="/form-associated.html">
-    <span class="step-number">Step 08</span>
-    <span class="step-title">Form-Associated Elements — Fixed</span>
-    <span class="step-desc">Add <code>static formAssociated = true</code> and <code>attachInternals()</code> to unlock native validation and proper form submission.</span>
-  </a>
-</div>
-
-{{> footer}}
+</html>

@@ -1,33 +1,12 @@
 {{> header
-  title="Form-Associated Elements (Broken)"
-  next="/form-associated.html"
-  nextTitle="Form-Associated Elements (Fixed)"
-  prev="/lifecycle-callbacks.html"
-  prevTitle="Lifecycle Callbacks"
+title="Form-Associated Elements (Broken)"
+next="/form-associated.html"
+nextTitle="Form-Associated Elements (Fixed)"
+prev="/lifecycle-callbacks.html"
+prevTitle="Lifecycle Callbacks"
 }}
 
 <style>
-  button {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.6rem 1.4rem;
-    background: var(--color-primary);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-    height: 42px;
-    width: 100%;
-    justify-content: center;
-    margin-top: 0.5rem;
-
-    &:hover { background: #005fcc; }
-  }
-
   form {
     display: flex;
     flex-direction: column;
@@ -49,6 +28,31 @@
     margin: 0;
     font-size: 0.875rem;
     color: #666;
+  }
+</style>
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.4rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    height: 42px;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+
+    &:hover {
+      background: #005fcc;
+    }
   }
 
   console-logger {
@@ -85,13 +89,14 @@
   The browser treats them as unknown elements, not form controls.
 </p>
 
+<console-logger></console-logger>
+
 {{> code jsSource="components/form-field"}}
 
 <script type="module" src="/js/components/email-field.js"></script>
 <script type="module" src="/js/components/password-field.js"></script>
 <script type="module" src="/js/components/console-log.js"></script>
 
-<console-logger></console-logger>
 
 <script type="module">
   document.querySelector('#login-form').addEventListener('submit', (e) => {

@@ -19,6 +19,7 @@ class FormFieldFixed extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._internals = this.attachInternals();
+    this._connected = false;
   }
 
   get value() {

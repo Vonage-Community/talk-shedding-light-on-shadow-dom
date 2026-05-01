@@ -1,34 +1,10 @@
 {{> header
-  title="Form-Associated Elements (Fixed)"
-  next="/observed-attributes.html"
-  nextTitle="Observed Attributes"
-  prev="/form-associated-broken.html"
-  prevTitle="Form-Associated Elements (Broken)"
+title="Form-Associated Elements (Fixed)"
+prev="/form-associated-broken.html"
+prevTitle="Form-Associated Elements (Broken)"
 }}
 
-<style>
-  button {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.6rem 1.4rem;
-    background: var(--color-primary);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s;
-    height: 42px;
-    width: 100%;
-    justify-content: center;
-    margin-top: 0.5rem;
-
-    &:hover { background: #005fcc; }
-    &:disabled { opacity: 0.45; cursor: not-allowed; }
-  }
-
+<style id="demo-style">
   form {
     display: flex;
     flex-direction: column;
@@ -51,6 +27,37 @@
     font-size: 0.875rem;
     color: #666;
   }
+</style>
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.6rem 1.4rem;
+    background: var(--color-primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    height: 42px;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+
+    &:hover {
+      background: #005fcc;
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+
 
   console-logger {
     margin-top: 1rem;
@@ -85,13 +92,13 @@
   <code>FormData</code> now contains the values from the custom elements, exactly like native inputs.
 </p>
 
+<console-logger></console-logger>
+
 {{> code jsSource="components/form-field-fixed"}}
 
 <script type="module" src="/js/components/email-field-fixed.js"></script>
 <script type="module" src="/js/components/password-field-fixed.js"></script>
 <script type="module" src="/js/components/console-log.js"></script>
-
-<console-logger></console-logger>
 
 <script type="module">
   document.querySelector('#login-form').addEventListener('submit', (e) => {
