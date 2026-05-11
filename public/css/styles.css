@@ -563,3 +563,51 @@ section.has-light-background h5,
 section.has-light-background h6 {
   color: #222
 }
+
+/* About Me slide */
+.reveal .about-me-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.reveal .about-me-layout ul {
+  text-align: left;
+  flex: 1;
+}
+
+.reveal .about-me-photo {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  flex-shrink: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.reveal .memorial-photo {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  margin: 0 auto 1.5rem;
+  border: none;
+  box-shadow: none;
+}
+
+.reveal .social-logo {
+  width: 1.2em;
+  height: 1.2em;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-right: 0.4em;
+  border: none;
+  box-shadow: none;
+}
