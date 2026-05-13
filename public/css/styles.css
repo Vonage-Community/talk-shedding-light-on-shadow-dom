@@ -38,18 +38,17 @@
 
 :root {
 
-  --vonage-cyan: #60DEFE;
-  --vonage-violet: #A663FF;
-  --vonage-magenta: #FD3FE4;
-  --vonage-coral: #FF9C9D;
-  --vonage-purple: #B27BF2;
-  --vonage-green: #1DBF73;
-  --vonage-red: #F75959;
+  --vonage-blue: #86C7ED;
+  --vonage-magenta: #CE3492;
+  --vonage-purple: #7055A4;
+  --vonage-dark-purple: #642974;
+  --vonage-navy: #29225B;
+  --vonage-coral: #FA7554;
 
-  --background-start: #1A0833;
-  --background-end: #2D1159;
+  --background-start: #14102E;
+  --background-end: #29225B;
 
-  --r-background: #1A0833;
+  --r-background: #14102E;
   --r-background-color: #191919;
   --r-main-font: "Roboto", sans-serif;
   --r-main-font-size: 17px;
@@ -62,17 +61,17 @@
   --r-heading-line-height: 1.2;
   --r-heading-letter-spacing: 0.05em;
   --r-heading-text-transform: uppercase;
-  --r-heading-text-shadow: 0 0 30px color-mix(in srgb, var(--vonage-cyan) 30%, transparent);
+  --r-heading-text-shadow: 0 0 30px color-mix(in srgb, var(--vonage-blue) 30%, transparent);
   --r-heading-font-weight: 500;
-  --r-heading1-text-shadow: 0 0 40px color-mix(in srgb, var(--vonage-cyan) 40%, transparent), 0 0 80px color-mix(in srgb, var(--vonage-violet) 20%, transparent);
+  --r-heading1-text-shadow: 0 0 40px color-mix(in srgb, var(--vonage-blue) 40%, transparent), 0 0 80px color-mix(in srgb, var(--vonage-purple) 20%, transparent);
   --r-heading1-size: 2.5em;
   --r-heading2-size: 2.5em;
   --r-heading3-size: 1.3em;
   --r-heading4-size: 1em;
 
   --r-code-font: monospace;
-  --r-link-color: var(--vonage-cyan);
-  --r-link-color-dark: #3ab8d8;
+  --r-link-color: var(--vonage-blue);
+  --r-link-color-dark: #5aa8d4;
   --r-link-color-hover: #fff;
   --r-selection-background-color: #0579c8;
   --r-selection-color: #fff;
@@ -92,177 +91,11 @@
 
 body {
   color: #fff;
-  background: linear-gradient(135deg, #1A0833, #32153A);
-  animation: bgShift 25s ease-in-out infinite;
+  background: linear-gradient(135deg, #14102E, #29225B);
   height: 100%;
   min-height: 100%;
   overflow-x: hidden;
   background-attachment: fixed;
-}
-
-.circles {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  z-index: -1;
-  opacity: 20%;
-}
-
-.circles li {
-  position: absolute;
-  display: block;
-  list-style: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #60DEFE;
-  opacity: 0.9;
-  bottom: -150px;
-  animation: floatUp 25s linear infinite, colorCycle 14s ease-in-out infinite alternate, shapeMorph 20s ease-in-out infinite alternate;
-}
-
-.circles li:nth-child(1) {
-  left: 25%;
-  width: 80px;
-  height: 80px;
-  animation-delay: 0s;
-}
-
-.circles li:nth-child(2) {
-  left: 10%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 2s;
-  animation-duration: 12s;
-}
-
-.circles li:nth-child(3) {
-  left: 70%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 4s;
-}
-
-.circles li:nth-child(4) {
-  left: 40%;
-  width: 60px;
-  height: 60px;
-  animation-delay: 0s;
-  animation-duration: 18s;
-}
-
-.circles li:nth-child(5) {
-  left: 65%;
-  width: 25px;
-  height: 25px;
-  animation-delay: 0s;
-}
-
-.circles li:nth-child(6) {
-  left: 75%;
-  width: 110px;
-  height: 110px;
-  animation-delay: 3s;
-}
-
-.circles li:nth-child(7) {
-  left: 35%;
-  width: 150px;
-  height: 150px;
-  animation-delay: 7s;
-}
-
-.circles li:nth-child(8) {
-  left: 50%;
-  width: 25px;
-  height: 25px;
-  animation-delay: 15s;
-  animation-duration: 45s;
-}
-
-.circles li:nth-child(9) {
-  left: 20%;
-  width: 15px;
-  height: 15px;
-  animation-delay: 2s;
-  animation-duration: 35s;
-}
-
-.circles li:nth-child(10) {
-  left: 85%;
-  width: 150px;
-  height: 150px;
-  animation-delay: 0s;
-  animation-duration: 11s;
-}
-
-@keyframes floatUp {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 0.9;
-  }
-
-  100% {
-    transform: translateY(-1000px) rotate(720deg);
-    opacity: 0;
-  }
-}
-
-@keyframes shapeMorph {
-
-  0%,
-  100% {
-    border-radius: 50%;
-  }
-
-  25% {
-    border-radius: 25%;
-  }
-
-  50% {
-    border-radius: 0%;
-  }
-
-  75% {
-    border-radius: 20%;
-  }
-}
-
-@keyframes colorCycle {
-  0% {
-    background: #E5CBED;
-  }
-
-  25% {
-    background: #cc97da;
-  }
-
-  50% {
-    background: #b263c8;
-  }
-
-  75% {
-    background: #FF9C9D;
-  }
-
-  100% {
-    background: #60DEFE;
-  }
-}
-
-@keyframes bgShift {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
 }
 
 .reveal {
@@ -281,11 +114,11 @@ body {
   inset: 0;
   margin: auto;
 
-  border: 1px solid color-mix(in srgb, var(--vonage-cyan) 40%, transparent);
+  border: 1px solid color-mix(in srgb, var(--vonage-blue) 40%, transparent);
   box-shadow:
-    0 0 40px color-mix(in srgb, var(--vonage-cyan) 20%, transparent),
-    0 0 80px color-mix(in srgb, var(--vonage-violet) 15%, transparent),
-    inset 0 0 60px color-mix(in srgb, var(--vonage-violet) 10%, transparent);
+    0 0 40px color-mix(in srgb, var(--vonage-blue) 20%, transparent),
+    0 0 80px color-mix(in srgb, var(--vonage-purple) 15%, transparent),
+    inset 0 0 60px color-mix(in srgb, var(--vonage-purple) 10%, transparent);
   backdrop-filter: blur(12px);
 }
 
@@ -423,7 +256,7 @@ body {
   display: block;
   position: relative;
   box-shadow: 0 0 2px #0003;
-  border-left: 3px solid var(--vonage-violet);
+  border-left: 3px solid var(--vonage-purple);
 }
 
 .reveal blockquote::before {
@@ -433,7 +266,7 @@ body {
   left: 0.2em;
   font-size: 3em;
   font-style: normal;
-  color: var(--vonage-violet);
+  color: var(--vonage-purple);
   line-height: 1;
   opacity: 0.7;
 }
@@ -458,7 +291,7 @@ body {
   display: block;
   position: relative;
   box-shadow: 0 5px 15px #00000026;
-  border-left: 3px solid var(--vonage-cyan);
+  border-left: 3px solid var(--vonage-blue);
   border-radius: 0 4px 4px 0;
 }
 
@@ -466,7 +299,7 @@ body {
   font-family: var(--r-code-font);
   text-transform: none;
   tab-size: 2;
-  color: var(--vonage-cyan);
+  color: var(--vonage-blue);
 }
 
 .reveal pre code {
@@ -650,7 +483,7 @@ section.has-light-background h6 {
 /* Cyan bullet markers */
 .reveal ul>li::marker,
 .reveal ol>li::marker {
-  color: var(--vonage-cyan);
+  color: var(--vonage-blue);
 }
 
 /* Fragment animations — fade up */
