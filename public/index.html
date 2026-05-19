@@ -35,31 +35,6 @@
       </section>
 
       <section>
-        <h2>About Me</h2>
-        <div class="about-me-layout">
-          <ul>
-            <li>
-              <img class="social-logo" src="/images/mastodon.png" alt="Mastodon" />
-              phpc.social/<strong>@manchuck</strong>
-            </li>
-
-            <li>
-              <img class="social-logo" src="/images/linkedin.png" alt="LinkedIn" />
-              linkedin.com/in/<strong>manchuck</strong>
-            </li>
-
-            <li>
-              <img class="social-logo" src="/images/github.png" alt="GitHub" /> github.com/<strong>manchuck</strong>
-            </li>
-
-            <li>Sr Developer Advocate @ Vonage</li>
-
-          </ul>
-          <img class="about-me-photo" src="/images/about-me.jpg" alt="Chuck Reeves" />
-        </div>
-      </section>
-
-      <section>
         <h2>What is the DOM?</h2>
         <p>The <strong>Document Object Model</strong> is a live, tree-structured representation of an HTML page that the
           browser builds after parsing markup.</p>
@@ -74,13 +49,13 @@
         <h2>The DOM Tree</h2>
         <pre><code class="language-html" data-trim>
             &lt;html&gt;
-              &lt;head&gt;
-                &lt;title&gt;My Page&lt;/title&gt;
-              &lt;/head&gt;
-              &lt;body&gt;
-                &lt;h1&gt;Hello&lt;/h1&gt;
-                &lt;p&gt;World&lt;/p&gt;
-              &lt;/body&gt;
+            &lt;head&gt;
+            &lt;title&gt;My Page&lt;/title&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+            &lt;h1&gt;Hello&lt;/h1&gt;
+            &lt;p&gt;World&lt;/p&gt;
+            &lt;/body&gt;
             &lt;/html&gt;
           </code></pre>
         <p>The browser parses this into a <strong>node tree</strong> — parent/child/sibling relationships that scripts
@@ -136,10 +111,10 @@
           clone it into the document.</p>
         <pre><code class="language-html" data-trim>
             &lt;template id="card-tmpl"&gt;
-              &lt;article&gt;
-                &lt;h2 class="headline"&gt;&lt;/h2&gt;
-                &lt;p class="summary"&gt;&lt;/p&gt;
-              &lt;/article&gt;
+            &lt;article&gt;
+            &lt;h2 class="headline"&gt;&lt;/h2&gt;
+            &lt;p class="summary"&gt;&lt;/p&gt;
+            &lt;/article&gt;
             &lt;/template&gt;
           </code></pre>
         <pre><code class="language-javascript" data-trim>
@@ -294,19 +269,19 @@
         <h2>Using <code>::part()</code></h2>
         <pre><code class="language-javascript" data-trim>
             class ShipArticle extends HTMLElement {
-              constructor() {
-                super();
-                this.attachShadow({ mode: 'open' });
-              }
+            constructor() {
+            super();
+            this.attachShadow({ mode: 'open' });
+            }
 
-              connectedCallback() {
-                this.shadowRoot.innerHTML = `
+            connectedCallback() {
+            this.shadowRoot.innerHTML = `
             <article>
               <h2 part="headline">Canterbury</h2>
               <p class="summary" part="summary">The Canterbury...</p>
             </article>
-                `;
-              }
+            `;
+            }
             }
 
             customElements.define('ship-article', ShipArticle);
@@ -324,15 +299,15 @@
         <pre><code class="language-css" data-trim>
             /* Defined on the page — visible everywhere, including shadow roots */
             :root {
-              --card-bg: #1e1e2e;
-              --card-color: #cdd6f4;
+            --card-bg: #1e1e2e;
+            --card-color: #cdd6f4;
             }
           </code></pre>
         <pre><code class="language-css" data-trim>
             /* Inside the component's shadow styles — consumes the token */
             :host {
-              background: var(--card-bg, white);
-              color: var(--card-color, black);
+            background: var(--card-bg, white);
+            color: var(--card-color, black);
             }
           </code></pre>
         <p>Regular CSS rules and class selectors are blocked. Custom properties (tokens) flow through. Use
@@ -351,20 +326,20 @@
         <h2>Using <code>&lt;slot&gt;</code></h2>
         <pre><code class="language-javascript" data-trim>
             connectedCallback() {
-              this.shadowRoot.innerHTML = `
+            this.shadowRoot.innerHTML = `
             <article>
               <slot name="headline"></slot>
               <slot name="summary"></slot>
               <slot name="details"></slot>
             </article>
-              `;
+            `;
             }
           </code></pre>
         <pre><code class="language-html" data-trim>
             &lt;ship-article-slotted&gt;
-              &lt;h2 slot="headline"&gt;Canterbury&lt;/h2&gt;
-              &lt;p slot="summary"&gt;The Canterbury was...&lt;/p&gt;
-              &lt;details slot="details"&gt;...&lt;/details&gt;
+            &lt;h2 slot="headline"&gt;Canterbury&lt;/h2&gt;
+            &lt;p slot="summary"&gt;The Canterbury was...&lt;/p&gt;
+            &lt;details slot="details"&gt;...&lt;/details&gt;
             &lt;/ship-article-slotted&gt;
           </code></pre>
       </section>
@@ -378,18 +353,18 @@
 
             /* Target any slotted element */
             ::slotted(*) {
-              margin: 0;
+            margin: 0;
             }
 
             /* Target a specific slotted element type */
             ::slotted(h2) {
-              font-size: 1.5rem;
-              color: var(--card-color, inherit);
+            font-size: 1.5rem;
+            color: var(--card-color, inherit);
             }
 
             /* Target a slotted element by class */
             ::slotted(.highlight) {
-              background: yellow;
+            background: yellow;
             }
           </code></pre>
         <p>Only direct slotted children can be targeted — <code>::slotted()</code> cannot reach deeper descendants.</p>
@@ -412,31 +387,31 @@
         <h2>Lifecycle callbacks</h2>
         <pre><code class="language-javascript" data-trim>
             class ShipLifecycle extends HTMLElement {
-              static get observedAttributes() {
-                return ['ship-name', 'summary'];
-              }
+            static get observedAttributes() {
+            return ['ship-name', 'summary'];
+            }
 
-              constructor() {
-                super();
-                this.attachShadow({ mode: 'open' });
-              }
+            constructor() {
+            super();
+            this.attachShadow({ mode: 'open' });
+            }
 
-              connectedCallback() {
-                this.render();
-              }
+            connectedCallback() {
+            this.render();
+            }
 
-              disconnectedCallback() {
-                // clean up: remove listeners, stop timers
-              }
+            disconnectedCallback() {
+            // clean up: remove listeners, stop timers
+            }
 
-              attributeChangedCallback(name, oldVal, newVal) {
-                if (oldVal === newVal) return;
-                if (this.shadowRoot.innerHTML) this.render();
-              }
+            attributeChangedCallback(name, oldVal, newVal) {
+            if (oldVal === newVal) return;
+            if (this.shadowRoot.innerHTML) this.render();
+            }
 
-              adoptedCallback() {
-                // element moved to a new document
-              }
+            adoptedCallback() {
+            // element moved to a new document
+            }
             }
           </code></pre>
       </section>
@@ -452,26 +427,26 @@
         <h2><code>attachInternals()</code></h2>
         <pre><code class="language-javascript" data-trim>
             class FormFieldFixed extends HTMLElement {
-              static formAssociated = true;
+            static formAssociated = true;
 
-              constructor() {
-                super();
-                this.attachShadow({ mode: 'open' });
-                this._internals = this.attachInternals();
-              }
+            constructor() {
+            super();
+            this.attachShadow({ mode: 'open' });
+            this._internals = this.attachInternals();
+            }
 
-              get form() { return this._internals.form; }
-              get validity() { return this._internals.validity; }
-              get validationMessage() { return this._internals.validationMessage; }
-              get willValidate() { return this._internals.willValidate; }
+            get form() { return this._internals.form; }
+            get validity() { return this._internals.validity; }
+            get validationMessage() { return this._internals.validationMessage; }
+            get willValidate() { return this._internals.willValidate; }
 
-              // inside input event listener:
-              this._internals.setFormValue(input.value);
-              this._internals.setValidity(
-                { valueMissing: true },
-                'This field is required.',
-                input
-              );
+            // inside input event listener:
+            this._internals.setFormValue(input.value);
+            this._internals.setValidity(
+            { valueMissing: true },
+            'This field is required.',
+            input
+            );
             }
 
             customElements.define('form-field-fixed', FormFieldFixed);
