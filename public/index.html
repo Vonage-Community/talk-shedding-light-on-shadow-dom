@@ -8,6 +8,7 @@
   <title>Shedding light on the Shadow DOM</title>
 
   <link href="css/styles.css" rel="stylesheet" />
+  <link href="css/theme.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -36,120 +37,14 @@
           <h6>@manchuck</h6>
       </section>
 
-      <section class="what-is-the-dom">
-        <h2>What is the DOM?</h2>
-        <aside class="notes">
-          <p>The <strong>Document Object Model</strong> is a live, tree-structured representation of an HTML page that
-            the
-            browser builds after parsing markup.</p>
-          <ul>
-            <li>Every tag becomes a <strong>node</strong> in the tree</li>
-            <li>Nodes can be elements, text, comments, or attributes</li>
-            <li>JavaScript reads and mutates it via <code>document</code> APIs</li>
-          </ul>
-        </aside>
-      </section>
-
-      <section class="the-dom-tree">
-        <h2>The DOM Tree</h2>
-        <pre><code class="language-html" data-trim>
-            &lt;html&gt;
-            &lt;head&gt;
-            &lt;title&gt;My Page&lt;/title&gt;
-            &lt;/head&gt;
-            &lt;body&gt;
-            &lt;h1&gt;Hello&lt;/h1&gt;
-            &lt;p&gt;World&lt;/p&gt;
-            &lt;/body&gt;
-            &lt;/html&gt;
-          </code></pre>
-        <p>The browser parses this into a <strong>node tree</strong> — parent/child/sibling relationships that scripts
-          and stylesheets traverse.</p>
-      </section>
-
-      <section class="interacting-with-the-dom">
-        <h2>Interacting with the DOM</h2>
-        <pre>
-          <code class="language-javascript" data-line-numbers="1|3|5-6|8-10" data-trim>
-            const heading = document.querySelector('h1');
-
-            console.log(heading.textContent);
-
-            heading.textContent = 'Shadow DOM';
-            heading.classList.add('highlight');
-
-            const p = document.createElement('p');
-            p.textContent = 'A new paragraph';
-            document.body.appendChild(p);
-          </code>
-        </pre>
-      </section>
-
-      <section class="document-fragments">
-        <h2>Document Fragments</h2>
-
-        <pre>
-          <code class="language-javascript" data-trim>
-            const fragment = document.createDocumentFragment();
-
-            const li1 = document.createElement('li');
-            li1.textContent = 'Item one';
-            fragment.appendChild(li1);
-
-            const li2 = document.createElement('li');
-            li2.textContent = 'Item two';
-            fragment.appendChild(li2);
-
-            // Single reflow — fragment's children move into the DOM
-            document.querySelector('ul').appendChild(fragment);
-          </code>
-        </pre>
-
-        <aside class="notes">
-          <p>A <code>DocumentFragment</code> is a lightweight, in-memory DOM node that holds a subtree
-            <strong>outside</strong> the live document.
-          </p>
-          <p>Mutations inside the fragment cause <strong>zero reflows</strong> until it is attached — a stepping stone
-            to
-            the encapsulation the Shadow DOM takes further.</p>
-        </aside>
-      </section>
-
-      <section class="template-element">
-        <h2>The <code>&lt;template&gt;</code> Element</h2>
-        <pre><code class="language-html" data-trim>
-            &lt;template id="card-tmpl"&gt;
-            &lt;article&gt;
-            &lt;h2 class="headline"&gt;&lt;/h2&gt;
-            &lt;p class="summary"&gt;&lt;/p&gt;
-            &lt;/article&gt;
-            &lt;/template&gt;
-          </code></pre>
-        <pre><code class="language-javascript" data-trim>
-            const tmpl = document.getElementById('card-tmpl');
-
-            // Deep-clone the inert tree and attach it
-            const clone = tmpl.content.cloneNode(true);
-            clone.querySelector('.headline').textContent = 'Canterbury';
-            document.body.appendChild(clone);
-          </code></pre>
-        <aside class="notes">
-          <p>A <code>&lt;template&gt;</code> holds inert HTML — parsed but <strong>never rendered</strong> — until you
-            clone it into the document.</p>
-          <p>Shadow DOM builds on this — a shadow root is effectively a scoped, auto-managed template clone attached to
-            an
-            element.</p>
-        </aside>
-      </section>
 
       <section class="what-is-the-shadow-dom">
-        <section>
-          <h2>What is the Shadow DOM?</h2>
-        </section>
+        <h2>What is the Shadow DOM?</h2>
 
         <section>
           <blockquote>
-            &ldquo;Shadow DOM enables you to attach a DOM tree to an element, and have the internals of this tree hidden
+            &ldquo;Shadow DOM enables you to attach a DOM tree to an element, and have the internals of this tree
+            hidden
             from JavaScript and CSS running in the page.&rdquo;
           </blockquote>
           <cite>&mdash; MDN &middot; <a
@@ -158,149 +53,387 @@
 
         <section>
           <blockquote>
-            &ldquo;Shadow DOM is like your HTML going &lsquo;this is my private room.&rsquo; It keeps its markup and CSS
-            in its own little bubble so the rest of the page can&rsquo;t mess with it, and it only lets outside content
+            &ldquo;Shadow DOM is like your HTML going &lsquo;this is my private room.&rsquo; It keeps its markup and
+            CSS
+            in its own little bubble so the rest of the page can&rsquo;t mess with it, and it only lets outside
+            content
             in
             through a <code>&lt;slot&gt;</code>&mdash;very &lsquo;boundaries,&rsquo; very &lsquo;do not
             disturb.&rsquo;&rdquo;
           </blockquote>
           <cite>&mdash; Copilot GPT-5.2</cite>
+          <aside class="notes">
+            <p>Shadow DOM started as an internal browser technique for encapsulating native widget internals, then
+              evolved through the Web Components effort into a standardized developer API for building encapsulated,
+              reusable web UI components.</p>
+          </aside>
         </section>
-      </section>
 
-      <section class="always-there">
-        <h2>It was there all along</h2>
-        <pre>
-          <code class="language-html" data-trim>
-            &lt;video src="/movie.mp4" &gt;&lt;/video&gt;
-          </code>
-        </pre>
-        <video src="/movie.mp4" preload="auto" controls loop autoplay disablepictureinpicture disableremoteplayback
-          x-webkit-airplay="allow">
-          <div id="video-controls" class="controls" data-state="hidden">
-            <button id="play-pause" type="button" data-state="play">Play/Pause</button>
-            <button id="stop" type="button" data-state="stop">Stop</button>
-            <div class="progress">
-              <progress id="progress" value="0">
-                <span id="progress-bar"></span>
-              </progress>
-            </div>
-            <button id="mute" type="button" style="display: none" data-state="mute">Mute/Unmute</button>
-            <button id="vol-inc" type="button" data-state="vol-up">Vol+</button>
-            <button id="vol-dec" type="button" data-state="vol-down">Vol-</button>
-            <button id="fs" type="button" data-state="go-fullscreen">Fullscreen</button>
-          </div>
-        </video>
-        <aside class="notes">
-          <p>Browsers have used Shadow DOM internally for years to build native controls. You just couldn&rsquo;t see —
-            or
-            style — what was inside.</p>
+        <section class="always-there">
+          <video src="/movie.mp4" preload="auto" controls loop autoplay disablepictureinpicture disableremoteplayback
+            x-webkit-airplay="allow" muted>
+          </video>
+
+          <aside class="notes">
+            <p>Browsers have used Shadow DOM internally for years to build native controls. You just couldn&rsquo;t
+              see
+              —
+              or
+              style — what was inside.</p>
+            <ul>
+              <li>Play / pause button</li>
+              <li>Scrubber &amp; progress bar</li>
+              <li>Volume control</li>
+              <li>Fullscreen button</li>
+              <li>Captions menu</li>
+            </ul>
+            <p>Every one of those controls lives in a hidden shadow tree the browser creates automatically. Shadow DOM
+              makes
+              the same capability available to <em>your</em> elements.</p>
+          </aside>
+        </section>
+
+        <section class="not-web-components">
+          <h2>Shadow DOM &ne; Web Components</h2>
+        </section>
+
+        <section class="three-specs">
+          <h2>Web Components = 3 Specs</h2>
           <ul>
-            <li>Play / pause button</li>
-            <li>Scrubber &amp; progress bar</li>
-            <li>Volume control</li>
-            <li>Fullscreen button</li>
-            <li>Captions menu</li>
+            <li>
+              <strong>Custom Elements</strong> &mdash;
+              define new HTML tags with their own behaviour via <code>customElements.define()</code>
+            </li>
+            <li>
+              <strong>Shadow DOM</strong> &mdash;
+              attach a scoped, encapsulated DOM tree to any custom element
+            </li>
+            <li>
+              <strong>HTML Templates</strong> &mdash;
+              declare inert, reusable markup with <code>&lt;template&gt;</code> and <code>&lt;slot&gt;</code>
+            </li>
           </ul>
-          <p>Every one of those controls lives in a hidden shadow tree the browser creates automatically. Shadow DOM
-            makes
-            the same capability available to <em>your</em> elements.</p>
-        </aside>
+          <aside class="notes">
+            <p>Shadow DOM is the encapsulation layer. You can use each spec independently, but together they form a full
+              component model.</p>
+          </aside>
+        </section>
+
+        <section>
+          <img src="/images/house.jpg" />
+        </section>
+
       </section>
 
-      <section class="not-web-components">
-        <h2>Shadow DOM &ne; Web Components</h2>
-      </section>
+      <section class="what-is-the-dom">
+        <h2>Pouring the Foundation</h2>
+        <section>
+          <aside class="notes">
+            <p>The <strong>Document Object Model</strong> is a live, tree-structured representation of an HTML page that
+              the
+              browser builds after parsing markup.</p>
+            <ul>
+              <li>Every tag becomes a <strong>node</strong> in the tree</li>
+              <li>Nodes can be elements, text, comments, or attributes</li>
+              <li>JavaScript reads and mutates it via <code>document</code> APIs</li>
+            </ul>
+          </aside>
+        </section>
 
-      <section class="three-specs">
-        <h2>Web Components = 3 Specs</h2>
-        <ul>
-          <li>
-            <strong>Custom Elements</strong> &mdash;
-            define new HTML tags with their own behaviour via <code>customElements.define()</code>
-          </li>
-          <li>
-            <strong>Shadow DOM</strong> &mdash;
-            attach a scoped, encapsulated DOM tree to any custom element
-          </li>
-          <li>
-            <strong>HTML Templates</strong> &mdash;
-            declare inert, reusable markup with <code>&lt;template&gt;</code> and <code>&lt;slot&gt;</code>
-          </li>
-        </ul>
-        <aside class="notes">
-          <p>Shadow DOM is the encapsulation layer. You can use each spec independently, but together they form a full
-            component model.</p>
-        </aside>
-      </section>
+        <section>
+          <h3>The DOM Tree</h3>
+          <pre>
+            <code class="language-html" data-trim data-line-numbers>
+              &lt;html&gt;
+              &nbsp;&nbsp;&lt;head&gt;
+              &nbsp;&nbsp;&nbsp;&lt;title&gt;My Page&lt;/title&gt;
+              &nbsp;&nbsp;&lt;/head&gt;
+              &nbsp;&nbsp;&lt;body&gt;
+              &nbsp;&nbsp;&nbsp;&lt;h1&gt;Hello&lt;/h1&gt;
+              &nbsp;&nbsp;&nbsp;&lt;p&gt;World&lt;/p&gt;
+              &nbsp;&nbsp;&lt;/body&gt;
+              &lt;/html&gt;
+            </code>
+          </pre>
+          <aside class="notes">
+            <p>The browser parses this into a <strong>node tree</strong> — parent/child/sibling relationships that
+              scripts
+              and stylesheets traverse.</p>
+          </aside>
+        </section>
 
-      <section class="as-house">
-        <img src="/images/house.jpg" alt="Janet Reeves" />
-        <aside class="notes">
-          <ul>
-            <li>Each custom element is a house.</li>
-            <li>A <code>ShadowRoot</code> is a locked room inside that house.</li>
-            <li>Houses can have locked rooms, but each house has at most one such room at a time.</li>
-          </ul>
-        </aside>
-      </section>
+        <section>
+          <h3>Interacting with the DOM</h3>
+          <pre>
+            <code class="language-javascript" data-line-numbers="1|3|5-6|8-10" data-trim>
+              const heading = document.querySelector('h1');
 
-      <section class="foundation">
-        <h2>Pouring the foundation</h2>
-        <h3>Elements you can attach to</h3>
-        <ul>
-          <li><code>&lt;article&gt;</code></li>
-          <li><code>&lt;aside&gt;</code></li>
-          <li><code>&lt;blockquote&gt;</code></li>
-          <li><code>&lt;body&gt;</code></li>
-          <li><code>&lt;div&gt;</code></li>
-          <li><code>&lt;footer&gt;</code></li>
-          <li><code>&lt;h1&gt;</code></li>
-          <li><code>&lt;h2&gt;</code></li>
-          <li><code>&lt;h3&gt;</code></li>
-          <li><code>&lt;h4&gt;</code></li>
-          <li><code>&lt;h5&gt;</code></li>
-          <li><code>&lt;h6&gt;</code></li>
-          <li><code>&lt;header&gt;</code></li>
-          <li><code>&lt;main&gt;</code></li>
-          <li><code>&lt;nav&gt;</code></li>
-          <li><code>&lt;p&gt;</code></li>
-          <li><code>&lt;section&gt;</code></li>
-          <li><code>&lt;span&gt;</code></li>
-        </ul>
+              console.log(heading.textContent);
+
+              heading.textContent = 'Shadow DOM';
+              heading.classList.add('highlight');
+
+              const p = document.createElement('p');
+              p.textContent = 'A new paragraph';
+              document.body.appendChild(p);
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h3>Document Fragments</h2>
+            <pre>
+              <code class="language-javascript" data-trim data-line-numbers="1|3-9|11-12">
+                const fragment = document.createDocumentFragment();
+
+                const li1 = document.createElement('li');
+                li1.textContent = 'Item one';
+                fragment.appendChild(li1);
+
+                const li2 = document.createElement('li');
+                li2.textContent = 'Item two';
+                fragment.appendChild(li2);
+
+                // Single reflow — fragment's children move into the DOM
+                document.querySelector('ul').appendChild(fragment);
+              </code>
+            </pre>
+
+            <aside class="notes">
+              <p>A <code>DocumentFragment</code> is a lightweight, in-memory DOM node that holds a subtree
+                <strong>outside</strong> the live document.
+              </p>
+              <p>Mutations inside the fragment cause <strong>zero reflows</strong> until it is attached — a stepping
+                stone
+                to
+                the encapsulation the Shadow DOM takes further.</p>
+            </aside>
+        </section>
+
+        <section class="template-element">
+          <h3>The <code>&lt;template&gt;</code> Element</h3>
+          <pre>
+            <code class="language-html" data-trim data-line-numbers>
+              &lt;template id="card-tmpl"&gt;
+              &nbsp;&lt;article&gt;
+              &nbsp;&nbsp;&lt;h2 class="headline"&gt;&lt;/h2&gt;
+              &nbsp;&nbsp;&lt;p class="summary"&gt;&lt;/p&gt;
+              &nbsp;&lt;/article&gt;
+              &lt;/template&gt;
+            </code>
+          </pre>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="1|3-5|7">
+              const tmpl = document.getElementById('card-tmpl');
+
+              // Deep-clone the inert tree and attach it
+              const clone = tmpl.content.cloneNode(true);
+              clone.querySelector('.headline').textContent = 'Canterbury';
+
+              document.body.appendChild(clone);
+            </code>
+          </pre>
+
+          <aside class="notes">
+            <p>A <code>&lt;template&gt;</code> holds inert HTML — parsed but <strong>never rendered</strong> — until you
+              clone it into the document.</p>
+            <p>Shadow DOM builds on this — a shadow root is effectively a scoped, auto-managed template clone attached
+              to an element.</p>
+          </aside>
+        </section>
+
       </section>
 
       <section class="imperatively">
-        <h2>Imperatively</h2>
-        <pre><code class="language-javascript" data-trim>
-            const section = document.querySelector('#demo-html');
-            const shadow = section.attachShadow({ mode: 'open' });
-
-            const newQuote = document.createElement('blockquote');
-            newQuote.textContent = '"The more you share, the more your bowl will be plentiful."';
-
-            const author = document.createElement('p');
-            author.textContent = '- James S.A. Corey, ';
-
-            const cite = document.createElement('cite');
-            cite.textContent = 'The Expanse';
-            author.appendChild(cite);
-
-            shadow.appendChild(newQuote);
-            shadow.appendChild(author);
-          </code></pre>
-      </section>
-
-      <section class="let-in-the-light">
+        <h2>How to use</h2>
         <section>
-          <h2>Let in the Light</h2>
-          <h3><code>::part</code></h3>
-          <p>The <code>::part</code> pseudo-element is a &ldquo;window&rdquo; that allows CSS to target elements inside
-            the Shadow DOM.</p>
+          <h3>Imperatively</h3>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="1-2|4-12|14-15">
+              const section = document.querySelector('#demo-html');
+              const shadow = section.attachShadow({ mode: 'open' });
+
+              const newQuote = document.createElement('blockquote');
+              newQuote.textContent = '"The more you share, the more your bowl will be plentiful."';
+
+              const author = document.createElement('p');
+              author.textContent = '- James S.A. Corey, ';
+
+              const cite = document.createElement('cite');
+              cite.textContent = 'The Expanse';
+              author.appendChild(cite);
+
+              shadow.appendChild(newQuote);
+              shadow.appendChild(author);
+            </code>
+          </pre>
         </section>
 
         <section>
-          <h2>Restricted Pseudo-classes</h2>
+          <h3>With Custom elements</h3>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="1-6|8">
+              <script type="text/template">
+              class MyElement extends HTMLElement {
+                constructor() {
+                  super();
+                  this.attachShadow({ mode: 'open' });
+                }
+              }
+
+              customElements.define('my-element', MyElement);
+              </script>
+            </code>
+          </pre>
+        </section>
+
+        <section>
+          <h3>Open vs Closed</h3>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="1-2|4-5">
+              <script type="text/template">
+                const root = element.attachShadow({ mode: 'open' });
+                console.log(element.shadowRoot); // accessible
+
+                const root = element.attachShadow({ mode: 'closed' });
+                console.log(element.shadowRoot); // null
+              </script>
+            </code>
+          </pre>
+
+          <aside class="notes">
+            <p>Think of Shadow DOM as a private room inside a house.
+              In open mode, the room is still self-contained, but there’s a visible door, so code can step in and
+              inspect it.
+              In closed mode, the room still exists and still works, but the house doesn’t expose the door, so outside
+              code can’t directly enter through the normal API.”</p>
+          </aside>
+        </section>
+
+        <section>
+          <h3>Elements that can use the Shadow DOM</h3>
+          <ul>
+            <li><code>&lt;article&gt;</code></li>
+            <li><code>&lt;aside&gt;</code></li>
+            <li><code>&lt;blockquote&gt;</code></li>
+            <li><code>&lt;body&gt;</code></li>
+            <li><code>&lt;div&gt;</code></li>
+            <li><code>&lt;footer&gt;</code></li>
+            <li><code>&lt;h1&gt;</code></li>
+            <li><code>&lt;h2&gt;</code></li>
+            <li><code>&lt;h3&gt;</code></li>
+            <li><code>&lt;h4&gt;</code></li>
+            <li><code>&lt;h5&gt;</code></li>
+            <li><code>&lt;h6&gt;</code></li>
+            <li><code>&lt;header&gt;</code></li>
+            <li><code>&lt;main&gt;</code></li>
+            <li><code>&lt;nav&gt;</code></li>
+            <li><code>&lt;p&gt;</code></li>
+            <li><code>&lt;section&gt;</code></li>
+            <li><code>&lt;span&gt;</code></li>
+          </ul>
+        </section>
+      </section>
+
+      <section class="let-in-the-light">
+        <h2>Letting the Light in</h2>
+        <h3>Styling</h3>
+
+        <section>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="1-14|16-24|26">
+              <script type="text/template">
+                const template = document.createElement('template');
+                template.innerHTML = `
+                  <style>
+                    article {
+                      // ... snip
+                    }
+
+                    // other styles
+                  </style>
+
+                  <article>
+                    <h2 class="headline">Canterbury</h2>
+                    <p class="summary" part="summary">The Canterbury...</p>
+                  </article>`;
+
+                class MyArticle extends HTMLElement {
+                  constructor() {
+                    super();
+                    this.attachShadow({ mode: 'closed' });
+                    this.shadowRoot.appendChild(
+                      template.content.cloneNode(true)
+                    );
+                  }
+                }
+
+                customElements.define('my-article', MyArticle);
+              </script>
+            </code>
+          </pre>
+
+        </section>
+      </section>
+
+      <section class="css">
+        <h2>Letting the Light in</h2>
+        <h3><code>::part</code></h3>
+
+        <section>
+          <pre>
+            <code class="language-css" data-trim data-line-numbers="3-5|7-11">
+              <script type="text/template">
+                /* styles.css */
+
+                my-article::part(headline) {
+                  color: var(--color-primary);
+                }
+
+                my-article::part(summary) {
+                  border-left-color: var(--color-primary);
+                  color: #C0FFEE;
+                }
+              </script>
+            </code>
+          </pre>
+
+        </section>
+
+        <section>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="6|7">
+              <script type="text/template">
+                // my-article.js
+
+                const template = document.createElement('template');
+                template.innerHTML = `
+                  <article>
+                    <h2 part="headline">Canterbury</h2>
+                    <p part="summary" part="summary">The Canterbury...</p>
+                  </article>`;
+
+                class MyArticle extends HTMLElement {
+                  constructor() {
+                    super();
+                    this.attachShadow({ mode: 'closed' });
+                    this.shadowRoot.appendChild(
+                      template.content.cloneNode(true)
+                    );
+                  }
+                }
+              </script>
+            </code>
+          </pre>
+
+          <aside class="notes">
+            <p>The <code>::part</code> pseudo-element is a &ldquo;window&rdquo; that allows CSS to target elements
+              inside
+              the Shadow DOM.</p>
+          </aside>
+        </section>
+
+        <section>
           <ul>
             <li><code>:root</code></li>
             <li><code>:empty</code></li>
@@ -314,126 +447,256 @@
             <li><code>:first-of-type()</code></li>
             <li><code>:last-of-type()</code></li>
           </ul>
-          <p>Use <code>::part()::hover</code> and similar to work around these restrictions.</p>
-          <cite>&mdash; <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selector">MDN CSS
-              Selectors</a></cite>
+          <aside class="notes">
+            <p>Use <code>::part()::hover</code> and similar to work around these restrictions.</p>
+            <cite>&mdash; <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selector">MDN CSS
+                Selectors</a></cite>
+          </aside>
         </section>
 
         <section>
-          <h2>Using <code>::part()</code></h2>
-          <pre><code class="language-javascript" data-trim>
-              class ShipArticle extends HTMLElement {
-              constructor() {
-              super();
-              this.attachShadow({ mode: 'open' });
-              }
-
-              connectedCallback() {
-              this.shadowRoot.innerHTML = `
-              <article>
-                <h2 part="headline">Canterbury</h2>
-                <p class="summary" part="summary">The Canterbury...</p>
-              </article>
-              `;
-              }
-              }
-
-              customElements.define('ship-article', ShipArticle);
-            </code></pre>
-          <pre><code class="language-css" data-trim>
-              ship-article::part(headline) { color: var(--color-primary); }
-              ship-article::part(summary) { border-left-color: var(--color-primary); }
-            </code></pre>
-        </section>
-
-        <section>
-          <h2>CSS Variables Always Pierce the Boundary</h2>
-          <p><code>::part()</code> lets you style from outside. But CSS custom properties are the intended
-            <strong>theming
-              hook</strong> — they inherit through shadow boundaries by design.
-          </p>
-          <pre><code class="language-css" data-trim>
+          <pre>
+            <code class="language-css" data-trim data-line-numbers>
+              <script type="text/template">
               /* Defined on the page — visible everywhere, including shadow roots */
               :root {
-              --card-bg: #1e1e2e;
-              --card-color: #cdd6f4;
+                --card-bg: #1e1e2e;
+                --card-color: #cdd6f4;
               }
-            </code></pre>
-          <pre><code class="language-css" data-trim>
+              </script>
+            </code>
+          </pre>
+
+          <pre>
+            <code class="language-css" data-trim>
+              <script type="text/template">
               /* Inside the component's shadow styles — consumes the token */
               :host {
-              background: var(--card-bg, white);
-              color: var(--card-color, black);
+                background: var(--card-bg, white);
+                color: var(--card-color, black);
               }
-            </code></pre>
-          <p>Regular CSS rules and class selectors are blocked. Custom properties (tokens) flow through. Use
-            <code>:host</code> to consume them.
-          </p>
+              </script>
+            </code>
+          </pre>
+
+          <aside class="notes">
+            <p>CSS Variables Always Pierce the Boundary</p>
+            <p><code>::part()</code> lets you style from outside. But CSS custom properties are the intended
+              <strong>theming
+                hook</strong> — they inherit through shadow boundaries by design.
+            </p>
+            <p>Regular CSS rules and class selectors are blocked. Custom properties (tokens) flow through. Use
+              <code>:host</code> to consume them.
+            </p>
+          </aside>
         </section>
       </section>
 
       <section class="slot">
+        <h2>Opening Doors</h2>
+        <h3><code>&lt;slot&gt;</code></h3>
+
         <section>
-          <h2>Opening Doors</h2>
-          <h3><code>&lt;slot&gt;</code></h3>
-          <p><code>&lt;slot&gt;</code>s are structural doors that permit Light DOM content to be &ldquo;projected&rdquo;
-            into specific rooms your component defines.</p>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="6-7">
+              <script type="text/template">
+                // my-article.js
+
+                const template = document.createElement('template');
+                template.innerHTML = `
+                  <article>
+                    <slot name="headline"></slot>
+                    <slot name="summary" part="summary"></slot>
+                  </article>`;
+
+                class MyArticle extends HTMLElement {
+                  constructor() {
+                    super();
+                    this.attachShadow({ mode: 'closed' });
+                    this.shadowRoot.appendChild(
+                      template.content.cloneNode(true)
+                    );
+                  }
+                }
+              </script>
+            </code>
+          </pre>
+
+          <pre>
+            <code class="language-html" data-trim data-line-numbers="2-3">
+              <script type="text/template">
+                <my-article>
+                  <h2 slot="headline">Canterbury</h2>
+                  <p slot="summary">The Canterbury was...</p>
+                </my-article>
+              </script>
+            </code>
+          </pre>
+
+          <aside class="notes">
+            <p><code>&lt;slot&gt;</code>s are structural doors that permit Light DOM content to be
+              &ldquo;projected&rdquo;
+              into specific rooms your component defines.</p>
+          </aside>
         </section>
 
         <section>
-          <h2>Using <code>&lt;slot&gt;</code></h2>
-          <pre><code class="language-javascript" data-trim>
-              connectedCallback() {
-              this.shadowRoot.innerHTML = `
-              <article>
-                <slot name="headline"></slot>
-                <slot name="summary"></slot>
-                <slot name="details"></slot>
-              </article>
-              `;
-              }
-            </code></pre>
-          <pre><code class="language-html" data-trim>
-              &lt;ship-article-slotted&gt;
-              &lt;h2 slot="headline"&gt;Canterbury&lt;/h2&gt;
-              &lt;p slot="summary"&gt;The Canterbury was...&lt;/p&gt;
-              &lt;details slot="details"&gt;...&lt;/details&gt;
-              &lt;/ship-article-slotted&gt;
-            </code></pre>
-        </section>
-
-        <section>
-          <h2><code>::slotted()</code></h2>
-          <p>The flip side of <code>&lt;slot&gt;</code> — style projected Light DOM content <strong>from inside</strong>
-            the shadow root.</p>
-          <pre><code class="language-css" data-trim>
-              /* Inside the component's shadow &lt;style&gt; */
+          <h3><code>::slotted()</code></h3>
+          <pre>
+            <code class="language-css" data-trim data-line-numbers="4-6|9-12|15-17">
+              <script type="text/template">
+              /* Inside the component's shadow <style> */
 
               /* Target any slotted element */
               ::slotted(*) {
-              margin: 0;
+                margin: 0;
               }
 
               /* Target a specific slotted element type */
               ::slotted(h2) {
-              font-size: 1.5rem;
-              color: var(--card-color, inherit);
+                font-size: 1.5rem;
+                color: var(--card-color, inherit);
               }
 
               /* Target a slotted element by class */
               ::slotted(.highlight) {
-              background: yellow;
+                background: yellow;
               }
-            </code></pre>
-          <p>Only direct slotted children can be targeted — <code>::slotted()</code> cannot reach deeper descendants.
+                </script>
+            </code>
+          </pre>
+
+          <aside class="notes">
+            <p>The flip side of <code>&lt;slot&gt;</code> — style projected Light DOM content <strong>from
+                inside</strong>
+              the shadow root.</p>
+            <p>Only direct slotted children can be targeted — <code>::slotted()</code> cannot reach deeper descendants.
+            </p>
+          </aside>
+        </section>
+      </section>
+
+      <section class="plumbing">
+        <h2>Plumbing</h2>
+        <section>
+          <h3><code>attachInternals()</code></h3>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="">
+              <script type="text/template">
+                const template = document.createElement('template');
+                template.innerHTML = `
+                  <label>
+                    <input/>
+                  </label>`;
+
+                class FormField extends HTMLElement {
+                  static formAssociated = true;
+  
+                  constructor() {
+                    super();
+                    this.attachShadow({ mode: 'closed' });
+                    this._internals = this.attachInternals();
+                    this.shadowRoot.appendChild(
+                      template.content.cloneNode(true)
+                    );
+
+                    this.input = this.shadowRoot.querySelector('input');
+                  }
+  
+                  get form() {
+                    return this._internals.form;
+                  }
+  
+                  get validity() {
+                    return this._internals.validity;
+                  }
+  
+                  get validationMessage() {
+                    return this._internals.validationMessage;
+                  }
+  
+                  get willValidate() {
+                    return this._internals.willValidate;
+                  }
+  
+                  validate() {
+                    this._internals.setFormValue(this.input.value);
+                    this._internals.setValidity(
+                      { valueMissing: true },
+                      'This field is required.',
+                      this.input
+                    );
+                  }
+                }
+  
+                customElements.define('form-field', FormField);
+              </script>
+            </code>
+          </pre>
+          <aside class="notes">
+            <p>The plumbing and electrical panel hookups to the building&rsquo;s systems (forms, validation,
+              accessibility),
+              making it a legitimate, interoperable part of the house&mdash;not just a standalone gadget.</p>
+            <p>This class still will not work because we are not updating the value. That has been redacted for breviety
+            </p>
+          </aside>
+        </section>
+
+      </section>
+
+      <section class="plumbing">
+        <h2>Plumbing</h2>
+        <h3>Accessibility</h3>
+        <section>
+          <pre class="fragment">
+            <code class="language-html" data-trim data-line-numbers="">
+              <script type="text/template">
+                <my-article>
+                  <span slot="headline">Canterbury</span>
+                  <div slot="summary">The Canterbury was...</div>
+                </my-article>
+              </script>
+            </code>
+          </pre>
+
+          <aside class="notes">
+            <p>
+              <strong>Use real HTML semantics inside the shadow root</strong>
+              Shadow DOM doesn’t replace semantic HTML. If something is a button, use a real button; if it’s a
+              heading,
+              use a real heading.
+            </p>
+            <p>
+              <strong>Be careful with slots</strong><br>
+              A slot is flexible, but that also means consumers can pass in content you weren’t expecting, which can
+              break semantics or create confusing structure.
+            </p>
+          </aside>
+
+        </section>
+
+        <section>
+          <p>
+            Relationships using IDs can get tricky across shadow boundaries.
           </p>
+
+          <ul>
+            <li><code>label for=...</code></li>
+            <li><code>aria-labelledby</code></li>
+            <li><code>aria-describedby</code></li>
+          </ul>
+
+          <aside class="notes">
+            <p>Keep important labels close to the control they describe and prefer native labeling patterns where
+              possible</p>
+          </aside>
+
         </section>
       </section>
 
       <section class="smart-home">
+        <h2>Making the home Smart</h2>
         <section>
-          <h2>Making the home Smart</h2>
-          <h3>Lifecycle callbacks</h3>
           <p>Lifecycle callbacks are like the built-in automation for a smart home.</p>
           <ul>
             <li><code>constructor()</code></li>
@@ -445,74 +708,115 @@
         </section>
 
         <section>
-          <h2>Lifecycle callbacks</h2>
-          <pre><code class="language-javascript" data-trim>
-              class ShipLifecycle extends HTMLElement {
-              static get observedAttributes() {
-              return ['ship-name', 'summary'];
-              }
+          <h3>Basic Callbacks</h3>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="7-11|13-15|17-19">
+              <script type="text/template">
+                class MyArticle extends HTMLElement {
+                  constructor() {
+                    super();
+                    this.attachShadow({ mode: 'closed' });
+                  }
 
-              constructor() {
-              super();
-              this.attachShadow({ mode: 'open' });
-              }
+                  connectedCallback() {
+                    if (this.shadowRoot.innerHTML) {
+                      this.render();
+                    }
+                  }
 
-              connectedCallback() {
-              this.render();
-              }
+                  disconnectedCallback() {
+                    // clean up: remove listeners, stop timers
+                  }
 
-              disconnectedCallback() {
-              // clean up: remove listeners, stop timers
-              }
+                  adoptedCallback() {
+                    // element moved to a new document
+                  }
+                }
+                </script>
+            </code>
+          </pre>
 
-              attributeChangedCallback(name, oldVal, newVal) {
-              if (oldVal === newVal) return;
-              if (this.shadowRoot.innerHTML) this.render();
-              }
-
-              adoptedCallback() {
-              // element moved to a new document
-              }
-              }
-            </code></pre>
+          <aside class="notes">
+            <p><code>connectedCallback()</code> can be called multiple times. For example after
+              <code>adoptedCallback()</code> when your element moves
+            </p>
+          </aside>
         </section>
 
         <section>
-          <h2>Plumbing</h2>
-          <h3><code>attachInternals()</code></h3>
-          <p>The plumbing and electrical panel hookups to the building&rsquo;s systems (forms, validation,
-            accessibility),
-            making it a legitimate, interoperable part of the house&mdash;not just a standalone gadget.</p>
+          <h3>Attributes</h3>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="7-17">
+              <script type="text/template">
+                class MyArticle extends HTMLElement {
+                  constructor() {
+                    super();
+                    this.attachShadow({ mode: 'closed' });
+                  }
+
+                  static observedAttributes = ['value'];
+
+                  attributeChangedCallback(name, oldVal, newVal) {
+                    if (oldVal === newVal) {
+                      return;
+                    }
+
+                    if (name === 'value') {
+                      this._internals.setFormValue(newVal);
+                    }
+                  }
+                }
+                </script>
+            </code>
+          </pre>
+
+          <aside class="notes">
+            <p>All attributes must be registered using <code>observedAttributes</code></p>
+            <p>If you want a child class to listen to a parent attribute change, you need to register in the child class
+              as well</p>
+          </aside>
+
         </section>
 
         <section>
-          <h2><code>attachInternals()</code></h2>
-          <pre><code class="language-javascript" data-trim>
-              class FormFieldFixed extends HTMLElement {
-              static formAssociated = true;
+          <h3>Data Attributes</h3>
+          <pre>
+            <code class="language-javascript" data-trim data-line-numbers="7|9-15|17-25">
+              <script type="text/template">
+                class MyArticle extends HTMLElement {
+                  constructor() {
+                    super();
+                    this.attachShadow({ mode: 'closed' });
+                  }
 
-              constructor() {
-              super();
-              this.attachShadow({ mode: 'open' });
-              this._internals = this.attachInternals();
-              }
+                  static observedAttributes = ['data-active'];
 
-              get form() { return this._internals.form; }
-              get validity() { return this._internals.validity; }
-              get validationMessage() { return this._internals.validationMessage; }
-              get willValidate() { return this._internals.willValidate; }
+                  get active() {
+                    return this.dataset.active;
+                  }
 
-              // inside input event listener:
-              this._internals.setFormValue(input.value);
-              this._internals.setValidity(
-              { valueMissing: true },
-              'This field is required.',
-              input
-              );
-              }
+                  set active(value) {
+                    return this.dataset.active = value;
+                  }
 
-              customElements.define('form-field-fixed', FormFieldFixed);
-            </code></pre>
+                  attributeChangedCallback(name, oldVal, newVal) {
+                    if (oldVal === newVal) {
+                      return;
+                    }
+
+                    if (name === 'active') {
+                      this.active = newVal;
+                    }
+                  }
+                }
+                </script>
+            </code>
+          </pre>
+
+          <aside class="notes">
+            <p>You also need to register <code>data-*</code></p>
+          </aside>
+
         </section>
       </section>
 
@@ -540,8 +844,8 @@
     import '/css/styles.css';
     import 'reveal.js/plugin/highlight/monokai.css';
     import Reveal from 'reveal.js';
-    import Markdown from 'reveal.js/plugin/markdown';
     import Highlight from 'reveal.js/plugin/highlight';
+    import Notes from 'reveal.js/plugin/notes';
 
     Reveal.initialize({
       hash: true,
@@ -553,7 +857,7 @@
       transition: 'fade',
       transitionSpeed: 'slow',
 
-      plugins: [Markdown, Highlight],
+      plugins: [Highlight, Notes],
     });
 
   </script>
