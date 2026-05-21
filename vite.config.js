@@ -2,7 +2,11 @@ import { defineConfig } from 'vite';
 import handlebars from 'vite-plugin-handlebars';
 import path from 'node:path';
 
+const repositoryName = process.env.GITHUB_REPOSITORY?.split('/')[1];
+const base = process.env.GITHUB_ACTIONS && repositoryName ? `/${repositoryName}/` : '/';
+
 export default defineConfig({
+  base,
   root: 'public',
 
   build: {
