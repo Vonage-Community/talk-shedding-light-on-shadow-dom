@@ -32,9 +32,9 @@
       <section class="title">
         <h1>Shedding Light on the Shadow DOM</h1>
         <h3>Chuck Reeves</h3>
-        <h5>Senior Developer Advocate @ Vonage</h3>
-          <img class="about-me-photo" src="/images/about-me.jpg" alt="Chuck Reeves" />
-          <h6>@manchuck</h6>
+        <h5>Senior Developer Advocate @ Vonage</h5>
+        <img class="about-me-photo" src="/images/about-me.jpg" alt="Chuck Reeves" />
+        <h6>@manchuck</h6>
       </section>
 
 
@@ -49,6 +49,12 @@
           </blockquote>
           <cite>&mdash; MDN &middot; <a
               href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM">developer.mozilla.org</a></cite>
+          <aside class="notes">
+            <p>outside CSS does not normally cross the boundary, outside JS can access an open shadow root closed mode
+              changes API access, not CSS encapsulation</p>
+
+          </aside>
+
         </section>
 
         <section>
@@ -120,14 +126,17 @@
         </section>
 
         <section>
-          <img src="/images/house.jpg" />
+          <img src="/images/house.png"
+            alt="A clean educational illustration of a house cutaway for a technical presentation, showing the inside structure of a home with clear rooms, walls, roof, foundation, doors, and windows" />
         </section>
 
       </section>
 
-      <section class="what-is-the-dom">
+      <section class="pouring">
         <h2>Pouring the Foundation</h2>
         <section>
+          <img src="/images/concrete.png"
+            alt="A minimal educational presentation illustration of pouring the foundation for a house, concrete slab forms, rebar grid, early structural layout" />
           <aside class="notes">
             <p>The <strong>Document Object Model</strong> is a live, tree-structured representation of an HTML page that
               the
@@ -194,7 +203,7 @@
                 li2.textContent = 'Item two';
                 fragment.appendChild(li2);
 
-                // Single reflow — fragment's children move into the DOM
+                // Build a subtree off-document, then insert it in one DOM operation.
                 document.querySelector('ul').appendChild(fragment);
               </code>
             </pre>
@@ -241,17 +250,16 @@
               to an element.</p>
           </aside>
         </section>
-
       </section>
 
       <section class="imperatively">
-        <h2>How to use</h2>
+        <h2>Creating a Shadow Root</h2>
         <section>
           <h3>Imperatively</h3>
           <pre>
             <code class="language-javascript" data-trim data-line-numbers="1-2|4-12|14-15">
               const section = document.querySelector('#demo-html');
-              const shadow = section.attachShadow({ mode: 'open' });
+              const shadow = section.attachShadow({ mode: 'closed' });
 
               const newQuote = document.createElement('blockquote');
               newQuote.textContent = '"The more you share, the more your bowl will be plentiful."';
@@ -277,7 +285,7 @@
               class MyElement extends HTMLElement {
                 constructor() {
                   super();
-                  this.attachShadow({ mode: 'open' });
+                  this.attachShadow({ mode: 'closed' });
                 }
               }
 
@@ -307,6 +315,9 @@
               inspect it.
               In closed mode, the room still exists and still works, but the house doesn’t expose the door, so outside
               code can’t directly enter through the normal API.”</p>
+            <p>
+              Open affects JS access, not CSS encapsulation
+            </p>
           </aside>
         </section>
 
@@ -332,14 +343,22 @@
             <li><code>&lt;section&gt;</code></li>
             <li><code>&lt;span&gt;</code></li>
           </ul>
+          <aside class="notes">
+            <p>Not every element can host a shadow root; some built-ins are restricted for security or platform reasons.
+            </p>
+          </aside>
         </section>
       </section>
 
       <section class="let-in-the-light">
-        <h2>Letting the Light in</h2>
-        <h3>Styling</h3>
+        <h2>Letting the Light in </h2>
+        <section>
+          <img src="/images/window.png"
+            alt="A clean symbolic illustration of a private room in a house mostly hidden from view, with only one window visible and warm light shining through it" />
+        </section>
 
         <section>
+          <h3>Styling</h3>
           <pre>
             <code class="language-javascript" data-trim data-line-numbers="1-14|16-24|26">
               <script type="text/template">
@@ -372,57 +391,50 @@
               </script>
             </code>
           </pre>
-
         </section>
-      </section>
-
-      <section class="css">
-        <h2>Letting the Light in</h2>
-        <h3><code>::part</code></h3>
 
         <section>
           <pre>
             <code class="language-css" data-trim data-line-numbers="3-5|7-11">
               <script type="text/template">
-                /* styles.css */
+                  /* styles.css */
 
-                my-article::part(headline) {
-                  color: var(--color-primary);
-                }
+                  my-article::part(headline) {
+                    color: var(--color-primary);
+                  }
 
-                my-article::part(summary) {
-                  border-left-color: var(--color-primary);
-                  color: #C0FFEE;
-                }
-              </script>
+                  my-article::part(summary) {
+                    border-left-color: var(--color-primary);
+                    color: #C0FFEE;
+                  }
+                </script>
             </code>
           </pre>
-
         </section>
 
         <section>
           <pre>
             <code class="language-javascript" data-trim data-line-numbers="6|7">
               <script type="text/template">
-                // my-article.js
+                  // my-article.js
 
-                const template = document.createElement('template');
-                template.innerHTML = `
-                  <article>
-                    <h2 part="headline">Canterbury</h2>
-                    <p part="summary" part="summary">The Canterbury...</p>
-                  </article>`;
+                  const template = document.createElement('template');
+                  template.innerHTML = `
+                    <article>
+                      <h2 part="headline">Canterbury</h2>
+                      <p part="summary">The Canterbury...</p>
+                    </article>`;
 
-                class MyArticle extends HTMLElement {
-                  constructor() {
-                    super();
-                    this.attachShadow({ mode: 'closed' });
-                    this.shadowRoot.appendChild(
-                      template.content.cloneNode(true)
-                    );
+                  class MyArticle extends HTMLElement {
+                    constructor() {
+                      super();
+                      this.attachShadow({ mode: 'closed' });
+                      this.shadowRoot.appendChild(
+                        template.content.cloneNode(true)
+                      );
+                    }
                   }
-                }
-              </script>
+                </script>
             </code>
           </pre>
 
@@ -451,6 +463,7 @@
             <p>Use <code>::part()::hover</code> and similar to work around these restrictions.</p>
             <cite>&mdash; <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selector">MDN CSS
                 Selectors</a></cite>
+            <p>You can style exposed parts, but you can’t chain arbitrary selectors into the shadow tree.</p>
           </aside>
         </section>
 
@@ -494,9 +507,13 @@
 
       <section class="slot">
         <h2>Opening Doors</h2>
-        <h3><code>&lt;slot&gt;</code></h3>
+        <section>
+          <img src="/images/door.png"
+            alt="A clean symbolic illustration of a private room in a house with a single doorway where an object or piece of furniture from outside is being brought into the room" />
+        </section>
 
         <section>
+          <h3><code>&lt;slot&gt;</code></h3>
           <pre>
             <code class="language-javascript" data-trim data-line-numbers="6-7">
               <script type="text/template">
@@ -537,6 +554,8 @@
             <p><code>&lt;slot&gt;</code>s are structural doors that permit Light DOM content to be
               &ldquo;projected&rdquo;
               into specific rooms your component defines.</p>
+            <p>slots project light DOM content into designated positions the slotted content still belongs to the light
+              DOM</p>
           </aside>
         </section>
 
@@ -570,7 +589,8 @@
             <p>The flip side of <code>&lt;slot&gt;</code> — style projected Light DOM content <strong>from
                 inside</strong>
               the shadow root.</p>
-            <p>Only direct slotted children can be targeted — <code>::slotted()</code> cannot reach deeper descendants.
+            <p>Only direct slotted children can be targeted — <code>::slotted()</code> cannot reach deeper
+              descendants.
             </p>
           </aside>
         </section>
@@ -578,6 +598,11 @@
 
       <section class="plumbing">
         <h2>Plumbing</h2>
+        <section>
+          <img src="/images/plumbing.png"
+            alt="A clean educational infographic illustration of a house cutaway focused on plumbing only, with neat exposed pipes, joints, and utility lines behind the walls, highly simplified and organized" />
+        </section>
+
         <section>
           <h3><code>attachInternals()</code></h3>
           <pre>
@@ -633,22 +658,28 @@
               </script>
             </code>
           </pre>
+          <cite>abridged, conceptual example</cite>
+
           <aside class="notes">
             <p>The plumbing and electrical panel hookups to the building&rsquo;s systems (forms, validation,
               accessibility),
               making it a legitimate, interoperable part of the house&mdash;not just a standalone gadget.</p>
-            <p>This class still will not work because we are not updating the value. That has been redacted for breviety
+            <p>This class still will not work because we are not updating the value. That has been redacted for
+              breviety
             </p>
           </aside>
         </section>
-
       </section>
 
-      <section class="plumbing">
+      <section class="plumbing" data-transition-speed="none">
         <h2>Plumbing</h2>
         <h3>Accessibility</h3>
+
         <section>
-          <pre class="fragment">
+          <p>
+            Keep html semantic
+          </p>
+          <pre>
             <code class="language-html" data-trim data-line-numbers="">
               <script type="text/template">
                 <my-article>
@@ -672,7 +703,6 @@
               break semantics or create confusing structure.
             </p>
           </aside>
-
         </section>
 
         <section>
@@ -697,6 +727,11 @@
       <section class="smart-home">
         <h2>Making the home Smart</h2>
         <section>
+          <img src="/images/smart-home.png"
+            alt="A minimal symbolic illustration of a house that automatically responds to events, with gentle visual cues showing lights, doors, and climate controls activating in sequence" />
+        </section>
+
+        <section>
           <p>Lifecycle callbacks are like the built-in automation for a smart home.</p>
           <ul>
             <li><code>constructor()</code></li>
@@ -710,7 +745,7 @@
         <section>
           <h3>Basic Callbacks</h3>
           <pre>
-            <code class="language-javascript" data-trim data-line-numbers="7-11|13-15|17-19">
+            <code class="language-javascript" data-trim data-line-numbers="7-14|16-18|20-22">
               <script type="text/template">
                 class MyArticle extends HTMLElement {
                   constructor() {
@@ -719,9 +754,12 @@
                   }
 
                   connectedCallback() {
-                    if (this.shadowRoot.innerHTML) {
-                      this.render();
+                    if (this._hasRendered) {
+                      return;
                     }
+
+                    this._hasRendered = true;
+                    this.render();
                   }
 
                   disconnectedCallback() {
@@ -746,7 +784,7 @@
         <section>
           <h3>Attributes</h3>
           <pre>
-            <code class="language-javascript" data-trim data-line-numbers="7-17">
+            <code class="language-javascript" data-trim data-line-numbers="7|9-17">
               <script type="text/template">
                 class MyArticle extends HTMLElement {
                   constructor() {
@@ -772,7 +810,8 @@
 
           <aside class="notes">
             <p>All attributes must be registered using <code>observedAttributes</code></p>
-            <p>If you want a child class to listen to a parent attribute change, you need to register in the child class
+            <p>If you want a child class to listen to a parent attribute change, you need to register in the child
+              class
               as well</p>
           </aside>
 
@@ -804,7 +843,7 @@
                       return;
                     }
 
-                    if (name === 'active') {
+                    if (name === 'data-active') {
                       this.active = newVal;
                     }
                   }
