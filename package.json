@@ -14,7 +14,7 @@
   "dependencies": {
     "@eslint/js": "10.0.1",
     "cross-env": "10.1.0",
-    "handlebars": "4.7.9",
+    "handlebars": "4.7.10",
     "highlight.js": "11.11.1",
     "reveal.js": "6.0.1",
     "vite": "8.0.3",
